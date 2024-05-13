@@ -19,24 +19,24 @@ Sistem Informasi Kepegawaian adalah sistem yang dapat membantu perusahaan untuk 
 
 ### Release **v1.0.1** - 27 April 2024
 
--New Feature: Report For Role:Editor
--Reformat Whatsapp Number Input
--Disable Required Whatsapp Number Input
--Add Footer Login Page
--Upgrade UI Mobile Login Page
+- New Feature: Report For Role:Editor
+- Reformat Whatsapp Number Input
+- Disable Required Whatsapp Number Input
+- Add Footer Login Page
+- Upgrade UI Mobile Login Page
 
 ### Release **v1.0.2** - 13 May 2024
 
--New Feature: User Activity Log
--New Feature: Status Online/Offline User
--Bug Fixing: Feature Download PDF Role:Employee -> View PDF Role:Employee
--Improve Logic Report Overtime Salary Role:Employee. So can view if date <= today's date
--Add Footer Manajemen User Menu and User Activity Log
--Clean Code From Unused Code
--Change Employee Status: Pegawai Tetap, Pegawai Kontrak, Pegawai Harian -> Pegawai Kontrak and Pegawai Harian
--Add Status Attribute on Import Data Fingerprint
--Improve Logic When Update Data Without Change's
--Change Alert: Swal -> Toast and Change Code to app.blade.php
+- New Feature: User Activity Log
+- New Feature: Status Online/Offline User
+- Bug Fixing: Feature Download PDF Role:Employee -> View PDF Role:Employee
+- Improve Logic Report Overtime Salary Role:Employee. So can view if date <= today's date
+- Add Footer Manajemen User Menu and User Activity Log
+- Clean Code From Unused Code
+- Change Employee Status: Pegawai Tetap, Pegawai Kontrak, Pegawai Harian -> Pegawai Kontrak and Pegawai Harian
+- Add Status Attribute on Import Data Fingerprint
+- Improve Logic When Update Data Without Change's
+- Change Alert: Swal -> Toast and Change Code to app.blade.php
 
 ## License
 
