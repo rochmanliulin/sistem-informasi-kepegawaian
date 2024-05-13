@@ -167,53 +167,6 @@
 
 @push('js')
 	<script>
-		let success = "{{ session('success') }}";
-		let error = "{{ session('error') }}";
-
-		// ALert success
-		if (success !== '') {
-			Swal.fire({
-					icon: 'success',
-					title: 'Yeayy...',
-					text: success,
-					showConfirmButton: false,
-					timer: 2500,
-					timerProgressBar: true,
-			});
-		}
-
-		// Alert error
-		if (error !== '') {
-			Swal.fire({
-					icon: 'error',
-					title: 'Waduh :(',
-					text: error,
-					showConfirmButton: false,
-					timer: 3000,
-					timerProgressBar: true,
-			});
-		}
-
-		// Alert delete
-		function showDeleteConfirm(element) {
-			event.preventDefault();
-
-			Swal.fire({
-				title: "Yakin?",
-				text: "Apakah Anda ingin menghapus data?",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#3085d6",
-				cancelButtonColor: "#d33",
-				confirmButtonText: "Iya, Hapus",
-				cancelButtonText: "Batal"
-			}).then((result) => {
-				if (result.isConfirmed) {
-					element.submit();
-				}
-			});
-		}
-
 		// Fungsi untuk menangani tombol Enter pada input pencarian
 		document.addEventListener("DOMContentLoaded", function() {
 			const searchInput = document.querySelector('#searchInput');

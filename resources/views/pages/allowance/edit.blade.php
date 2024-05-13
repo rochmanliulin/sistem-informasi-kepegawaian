@@ -145,7 +145,6 @@
 									<button type="submit" class="btn bg-gradient-success col-1 mb-0">Update</button>
 								</div>
 							</div>
-
 						</form>
 					</div>
 				</div>

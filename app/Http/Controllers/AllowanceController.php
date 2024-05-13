@@ -203,7 +203,7 @@ class AllowanceController extends Controller
 			unset($validated['gaji_harian']);
 			unset($validated['premi_hadir_harian']);
 
-		} else if ($request->status === 'Pegawai Tetap') {
+		} else if ($request->status === 'Pegawai Kontrak') {
 			$validated = $request->validate([
 				'nip' => 'required',
 				'gaji_bulanan' => 'nullable',
@@ -232,12 +232,39 @@ class AllowanceController extends Controller
 		}
 
 		try {
-			Allowance::where('nip', $id)->update($validated);
-			
+			$allowance = Allowance::where("nip", $id)->first();
+
+			if ($request->status === 'Pegawai Harian') {
+					// Cek apakah data yang diberikan sama dengan data yang ada dalam database
+					if ($allowance->gaji == $validated['gaji'] &&
+							$allowance->premi_hadir == $validated['premi_hadir']) {
+							return redirect('/allowance')->with('error', 'Tidak Ada Perubahan');
+					}
+			} else if ($request->status === 'Pegawai Kontrak') {
+					// Cek apakah data yang diberikan sama dengan data yang ada dalam database
+					if ($allowance->gaji == $validated['gaji'] &&
+							$allowance->premi_hadir == $validated['premi_hadir'] &&
+							$allowance->kos == $validated['kos'] &&
+							$allowance->masuk_pagi == $validated['masuk_pagi'] &&
+							$allowance->prestasi == $validated['prestasi'] &&
+							$allowance->komunikasi == $validated['komunikasi'] &&
+							$allowance->jabatan == $validated['jabatan'] &&
+							$allowance->lain_lain == $validated['lain_lain'] &&
+							$allowance->uang_makan == $validated['uang_makan'] &&
+							$allowance->kasbon == $validated['kasbon'] &&
+							$allowance->premi_lembur == $validated['premi_lembur'] &&
+							$allowance->doa == $validated['doa']) {
+
+						return redirect('/allowance')->with('error', 'Tidak Ada Perubahan');
+					}
+			}
+
+			$allowance->update($validated);
+
 			return redirect('/allowance')->with('success', 'Berhasil Update');
 		} catch (\Exception $e) {
 			return back()->with('error', 'Gagal mengupdate : ' . $e->getMessage());
-		}
+		}	
 	}
 
 	/**

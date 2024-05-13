@@ -70,6 +70,71 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     {{-- SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Alert --}}
+    <script>
+		let success = "{{ session('success') }}";
+		let error = "{{ session('error') }}";
+
+		// ALert success
+		if (success !== '') {
+			const Toast = Swal.mixin({
+				toast: true,
+				position: "top-end",
+				showConfirmButton: false,
+				timer: 2000,
+				timerProgressBar: true,
+				didOpen: (toast) => {
+					toast.onmouseenter = Swal.stopTimer;
+					toast.onmouseleave = Swal.resumeTimer;
+				}
+			});
+			Toast.fire({
+				icon: "success",
+				title: success
+			});
+		}
+
+		// Alert error
+		if (error !== '') {
+			const Toast = Swal.mixin({
+				toast: true,
+				position: "top-end",
+				showConfirmButton: false,
+				timer: 2000,
+				timerProgressBar: true,
+				didOpen: (toast) => {
+					toast.onmouseenter = Swal.stopTimer;
+					toast.onmouseleave = Swal.resumeTimer;
+				}
+			});
+			Toast.fire({
+				icon: "error",
+				title: error
+			});
+		}
+
+		// Alert delete
+		function showDeleteConfirm(element) {
+			event.preventDefault();
+
+			Swal.fire({
+				title: "Yakin?",
+				text: "Apakah Anda ingin menghapus data?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Iya, Hapus",
+				cancelButtonText: "Batal"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					element.submit();
+				}
+			});
+		}
+	</script>
+
     @stack('js')
 </body>
 

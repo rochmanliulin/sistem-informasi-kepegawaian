@@ -120,9 +120,25 @@ class FingerprintController extends Controller
 		]);
 
 		try {
-			Fingerprint::where('id', $id)->update($validated);
+			$fingerprint = Fingerprint::where("id", $id)->first();
 
-			return redirect('/fingerprint')->with('success', 'Berhasil update');
+			// Cek apakah data yang diberikan sama dengan data yang ada dalam database
+			if ($fingerprint->jadwal == $validated['jadwal'] &&
+					$fingerprint->tgl == $validated['tgl'] &&
+					$fingerprint->jam_kerja == $validated['jam_kerja'] &&
+					$fingerprint->terlambat == $validated['terlambat'] &&
+					$fingerprint->scan_istirahat_1 == $validated['scan_istirahat_1'] &&
+					$fingerprint->scan_istirahat_2 == $validated['scan_istirahat_2'] &&
+					$fingerprint->istirahat == $validated['istirahat'] &&
+					$fingerprint->durasi == $validated['durasi'] &&
+					$fingerprint->lembur_akhir == $validated['lembur_akhir']) {
+					
+				return redirect('/fingerprint')->with('error', 'Tidak Ada Perubahan');
+			}
+
+			$fingerprint->update($validated);
+
+			return redirect('/fingerprint')->with('success', 'Berhasil Update');
 		} catch (\Exception $e) {
 			return back()->with('error', 'Gagal mengupdate : ' . $e->getMessage());
 		}

@@ -160,11 +160,23 @@ class EmployeeController extends Controller
     ]);
 
     try {
-      Employee::where("nip", $id)->first()?->update($validated);
+      $employee = Employee::where("nip", $id)->first();
+
+      // Cek apakah data yang diberikan sama dengan data yang ada dalam database
+      if ($employee->nama == $validated['nama'] &&
+          $employee->jabatan == $validated['jabatan'] &&
+          $employee->departemen == $validated['departemen'] &&
+          $employee->tgl_masuk_kerja == $validated['tgl_masuk_kerja'] &&
+          $employee->status == $validated['status']) {
+
+        return redirect('/employee')->with('error', 'Tidak Ada Perubahan');
+      }
+
+      $employee->update($validated);
 
       return redirect('/employee')->with('success', 'Berhasil Update');
     } catch (\Exception $e) {
-      return back()->with('error', 'Gagal mengupdate : ' . $e->getMessage());
+        return back()->with('error', 'Gagal mengupdate : ' . $e->getMessage());
     }
   }
 

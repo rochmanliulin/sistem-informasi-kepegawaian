@@ -57,7 +57,6 @@
 										<label for="status" class="form-control-label">Status Pegawai</label>
 										<select class="form-select" name="status" id="status" aria-label="Default select example" required>
 											<option disabled selected>Pilih...</option>
-											<option value="Pegawai Tetap" {{ $employee->status === 'Pegawai Tetap' ? 'selected' : '' }}>Pegawai Tetap</option>
 											<option value="Pegawai Kontrak" {{ $employee->status === 'Pegawai Kontrak' ? 'selected' : '' }}>Pegawai Kontrak</option>
 											<option value="Pegawai Harian" {{ $employee->status === 'Pegawai Harian' ? 'selected' : '' }}>Pegawai Harian</option>
 										</select>

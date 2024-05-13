@@ -74,7 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('/allowance/import', [AllowanceController::class, 'import'])->name('allowance.import');
 		Route::get('/fingerprint', [FingerprintController::class, 'index'])->name('fingerprint.index');
 		Route::post('/fingerprint/import', [FingerprintController::class, 'import'])->name('fingerprint.import');
-		Route::post('/fingerprint/process', [FingerprintController::class, 'process'])->name('fingerprint.process');
+		// Route::post('/fingerprint/process', [FingerprintController::class, 'process'])->name('fingerprint.process');
 		Route::get('/fingerprint/{fingerprint}/edit', [FingerprintController::class, 'edit'])->name('fingerprint.edit');
 		Route::patch('/fingerprint/{fingerprint}', [FingerprintController::class, 'update'])->name('fingerprint.update');
 		Route::get('/salary/overtime', [OvertimeSalaryController::class, 'index'])->name('overtime-salary.index');
@@ -87,7 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
 	// Hanya Administrator
 	Route::group(['middleware' => 'can:isAdmin'], function () {
 		Route::resource('/users-management', UsersManagementController::class);
-		Route::get('/log', [ActivityController::class, 'log'])->name('users-activity.log');
+		Route::get('/log', [ActivityController::class, 'index'])->name('users-activity.index');
 		// Route::get('/log/{log}', [EmployeeController::class, 'show'])->name('users-activity.show');
 	});
 });

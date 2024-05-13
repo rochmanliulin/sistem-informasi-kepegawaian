@@ -8,7 +8,7 @@ v1.0.1 - 27/04/2024
   -Tambah footer pada login page
   -Upgrade mobile desain login page
 
-v1.0.2 - 08/05/2024
+v1.0.2 - 13/05/2024
   -Release fitur baru: User Activity Log
   -Release sub-fitur baru: status online/offline
   -Fixing bug download pdf role:pegawai
@@ -17,3 +17,5 @@ v1.0.2 - 08/05/2024
   -Clean Code dari code yang tidak diperlukan
   -Ubah status pegawai dari Pegawai Tetap, Pegawai Kontrak, Pegawai Harian -> Pegawai Kontrak dan Pegawai Harian
   -Tambah kolom status pada fitur import data fingerprint
+  -Bug Fixing ketika update data tanpa adanya perubahan
+  -Ubah alert: Swal -> Toast dan memindahkan code ke app.blade.php

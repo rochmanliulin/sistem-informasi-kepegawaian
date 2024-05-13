@@ -133,8 +133,20 @@ class UsersManagementController extends Controller
     $validated['whatsapp_number'] = $whatsappNumber;
 
     try {
-      User::where('id', $id)->update($validated);
+      $user = User::where('id', $id)->first();
       
+      // Cek apakah data yang diberikan sama dengan data yang ada dalam database
+      if ($user->nip == $validated['nip'] &&
+          $user->fullname == $validated['fullname'] &&
+          $user->role == $validated['role'] &&
+          $user->email == $validated['email'] &&
+          $user->whatsapp_number == $validated['whatsapp_number']) {
+
+        return redirect('/users-management')->with('error', 'Tidak Ada Perubahan');
+      }
+
+      $user->update($validated);
+
       return redirect('/users-management')->with('success', 'User berhasil diupdate');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal mengupdate : ' . $e->getMessage());

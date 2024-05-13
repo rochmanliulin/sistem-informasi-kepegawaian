@@ -38,7 +38,7 @@
 													@if ($log->created_at->diffInDays(now()) < 1)
 														{{ $log->created_at->diffForHumans() }}
 													@else
-														{{ $log->created_at->format('d-M-Y') }}
+														{{ $log->created_at->format('d M Y') }}
 													@endif
 												</small>
 											</td>

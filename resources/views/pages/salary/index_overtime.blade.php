@@ -158,25 +158,6 @@
   </div>
 @endsection
 
-@push('css')
-    <style>
-      @media screen and (max-width: 576px) {
-        /* li.page-item {
-          display: none;
-        }
-
-        .page-item:first-child,
-        .page-item:nth-child( 2 ),
-        .page-item:nth-last-child( 2 ),
-        .page-item:last-child,
-        .page-item.active,
-        .page-item.disabled {
-          display: block;
-        } */
-      }
-    </style>
-@endpush
-
 @push('js')
   <script>
     flatpickr('.date-range', {

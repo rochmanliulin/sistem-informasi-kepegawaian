@@ -170,21 +170,3 @@
     @include('layouts.footers.auth.footer')
   </div>
 @endsection
-
-@push('js')
-  <script>
-    let error = "{{ session('error') }}";
-
-    // Alert error
-		if (error !== '') {
-			Swal.fire({
-					icon: 'error',
-					title: 'Waduh :(',
-					text: error,
-					showConfirmButton: false,
-					timer: 3000,
-					timerProgressBar: true,
-			});
-		}
-  </script>
-@endpush

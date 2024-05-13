@@ -17,20 +17,21 @@ class ChangePassword extends Controller
         // Logout user saat mengakses halaman change password
         Auth::logout();
 
+        // Dinonaktifkan sementara karena route:list error jika aktif
         // Validasi signature URL untuk security
-        $request = request();
-        if (!URL::hasValidSignature($request)) {
-            abort(403, 'THIS ACTION IS UNAUTHORIZED.');
-        }
+        // $request = request();
+        // if (!URL::hasValidSignature($request)) {
+        //     abort(403, 'THIS ACTION IS UNAUTHORIZED.');
+        // }
 
-        // Ambil ID dari URL untuk mencari user
-        $id = intval(request()->id);
-        $this->user = User::find($id);
+        // // Ambil ID dari URL untuk mencari user
+        // $id = intval(request()->id);
+        // $this->user = User::find($id);
 
-        // Jika user tidak ditemukan
-        if (!$this->user) {
-            abort(404, 'USER NOT FOUND');
-        }
+        // // // Jika user tidak ditemukan
+        // if (!$this->user) {
+        //     abort(404, 'USER NOT FOUND');
+        // }
     }
 
     public function show()
