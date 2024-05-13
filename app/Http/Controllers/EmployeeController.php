@@ -119,7 +119,7 @@ class EmployeeController extends Controller
       'nama' => 'required',
       'jabatan' => 'nullable',
       'departemen' => 'nullable',
-      'tgl_masuk_kerja' => 'required',
+      'tgl_masuk_kerja' => 'nullable',
       'status' => 'required'
     ]);
 
@@ -140,7 +140,7 @@ class EmployeeController extends Controller
   public function edit(string $id)
   {
     $employee = Employee::where('nip', $id)->first();
-    
+
     return view('pages.employee.edit', [
       'employee' => $employee
     ]);

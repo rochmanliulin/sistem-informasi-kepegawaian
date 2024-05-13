@@ -99,20 +99,6 @@
 
 @push('js')
   <script>
-    let error = "{{ session('error') }}";
-
-    // Alert error
-		if (error !== '') {
-			Swal.fire({
-					icon: 'error',
-					title: 'Waduh :(',
-					text: error,
-					showConfirmButton: false,
-					timer: 3000,
-					timerProgressBar: true,
-			});
-		}
-
     // Untuk mengisi status berdasarkan nama pegawai
 		document.getElementById('fullName').addEventListener('change', function () {
 			let selectedOption = this.options[this.selectedIndex];
@@ -122,7 +108,7 @@
 				nip.value = selectedOption.getAttribute('data-nip');
 			} else {
 				nip.value = '';
-			}					
+			}
 		});
   </script>
 @endpush

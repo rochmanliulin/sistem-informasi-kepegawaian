@@ -46,7 +46,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="tgl_masuk_kerja" class="form-control-label">Tanggal Masuk Kerja</label>
-										<input type="text" class="form-control bg-white date" id="tglMasukKerja" placeholder="Tanggal Masuk Kerja" name="tgl_masuk_kerja" required onfocus="focused(this)" onfocusout="defocused(this)" />
+										<input type="text" class="form-control bg-white date" id="tglMasukKerja" placeholder="Tanggal Masuk Kerja" name="tgl_masuk_kerja" onfocus="focused(this)" onfocusout="defocused(this)" />
 										@error('tgl_masuk_kerja') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 									</div>
 								</div>
