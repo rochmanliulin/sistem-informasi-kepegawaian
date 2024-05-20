@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OvertimeSalaryExport;
 use Illuminate\Http\Request;
-use App\Models\History;
 use App\Models\Allowance;
 use App\Models\Fingerprint;
 use App\Models\OvertimeSalary;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OvertimeSalaryController extends Controller
 {
@@ -17,6 +18,7 @@ class OvertimeSalaryController extends Controller
 	public function index(Request $request)
 	{
 		$search = $request->search;
+		$info = OvertimeSalary::distinct()->pluck('keterangan')->toArray();
 
 		if ($search) {
 			$overtimeSalary = OvertimeSalary::whereHas('employee', function ($query) use ($search) {
@@ -31,8 +33,32 @@ class OvertimeSalaryController extends Controller
 
 		return view('pages.salary.index_overtime', [
 			'overtimeSalary' => $overtimeSalary,
-			'search' => $search
+			'search' => $search,
+			'info' => $info
 		])->with('page_title', 'Gaji Lembur');
+	}
+
+	public function export(Request $request)
+	{
+		$request->validate([
+			'info' => 'required'
+		]);
+
+		$info = $request->info;
+
+		try {
+      // Log activity
+      $user = Auth::user();
+      activity('Overtime Salary')
+        ->event('exported')
+        ->performedOn(new OvertimeSalary())
+        ->withProperties(['attributes' => ['nama' => $user->fullname]])
+        ->log("exported overtime salary {$info}.xlsx");
+      
+      return Excel::download(new OvertimeSalaryExport($info), 'Gaji ' . $info . '.xlsx');
+    } catch (\Exception $e) {
+      return back()->with('error', 'Gagal export file : ' . $e->getMessage());
+    }
 	}
 
 	/**

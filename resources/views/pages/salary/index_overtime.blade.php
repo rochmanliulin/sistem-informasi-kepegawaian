@@ -29,6 +29,28 @@
 							</div>
 						</form>
           </div>
+          <hr>
+          <div class="card-body">
+            <form action="{{ route('overtime-salary.export') }}" method="GET">
+              @csrf
+              <div class="row">
+                <div class="col-md-3">
+									<div class="form-group">
+                    <label for="dataDate" class="form-control-label">Tanggal</label>
+										<select class="form-select" id="dataDate" aria-label="Default select example" name="info" required>
+                      <option disabled selected></option>
+                      @foreach ($info as $item)
+                        <option value="{{ $item }}">{{ $item }}</option>
+                      @endforeach
+                    </select>
+									</div>
+								</div>
+                <div class="col-md-2" style="margin-top: 2%;">
+                  <button type="submit" class="btn btn-block bg-gradient-secondary"><i class="fas fa-download"></i>&nbsp;&nbsp;Export</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -164,7 +186,8 @@
       altInput: true,
       altFormat: "j F Y",
       dateFormat: "Y-m-d",
-      mode: "range"
+      mode: "range",
+      maxDate: "today"
     });
 
     flatpickr('.date-single', {

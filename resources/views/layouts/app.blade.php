@@ -72,6 +72,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {{-- Alert --}}
+    @if (!isset($isPage) || !$isPage)
     <script>
 		let success = "{{ session('success') }}";
 		let error = "{{ session('error') }}";
@@ -134,6 +135,7 @@
 			});
 		}
 	</script>
+    @endif
 
     @stack('js')
 </body>

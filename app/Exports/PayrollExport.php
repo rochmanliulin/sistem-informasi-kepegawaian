@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 class PayrollExport implements FromQuery, WithHeadings
 {
     use Exportable;
+    public $remark;
 
     public function __construct($remark)
     {
@@ -39,7 +40,7 @@ class PayrollExport implements FromQuery, WithHeadings
         return [
             'Trx ID',
             'Transfer Type',
-            'Beneficiary ID	',
+            'Beneficiary ID',
             'Credited Account',
             'Receiver Name',
             'Amount',

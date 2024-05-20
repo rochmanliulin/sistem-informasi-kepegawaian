@@ -19,3 +19,7 @@ v1.0.2 - 13/05/2024
   -Tambah kolom status pada fitur import data fingerprint
   -Bug Fixing ketika update data tanpa adanya perubahan
   -Ubah alert: Swal -> Toast dan memindahkan code ke app.blade.php
+
+v1.0.3 - 20/05/2024
+  -Release fitur baru: Video Tutorial
+  -Improve code

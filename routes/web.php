@@ -30,6 +30,7 @@ use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\TutorialController;
 
 // Jika belum terautentikasi
 Route::group(['middleware' => 'guest'], function () {
@@ -45,16 +46,6 @@ Route::group(['middleware' => 'guest'], function () {
 
 // Jika terautentikasi
 Route::group(['middleware' => 'auth'], function () {
-	// Route::get('/virtual-reality', [PageController::class, 'vr'])->name('virtual-reality');
-	// Route::get('/rtl', [PageController::class, 'rtl'])->name('rtl');
-	// Route::get('/profile-static', [PageController::class, 'profile'])->name('profile-static');
-	// Route::get('/sign-in-static', [PageController::class, 'signin'])->name('sign-in-static');
-	// Route::get('/sign-up-static', [PageController::class, 'signup'])->name('sign-up-static');
-	// Route::get('/{page}', [PageController::class, 'index'])->name('page');
-	// Route::get('/employee', [EmployeeController::class, 'index'])->name('employee');
-	// Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
-	// Route::post('/profile', [UserProfileController::class, 'update'])->name('profile.update');
-
 	Route::get('/', function () {return redirect('/dashboard');});
 	Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 	Route::post('logout', [LoginController::class, 'logout'])->name('logout');
@@ -74,20 +65,23 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('/allowance/import', [AllowanceController::class, 'import'])->name('allowance.import');
 		Route::get('/fingerprint', [FingerprintController::class, 'index'])->name('fingerprint.index');
 		Route::post('/fingerprint/import', [FingerprintController::class, 'import'])->name('fingerprint.import');
-		// Route::post('/fingerprint/process', [FingerprintController::class, 'process'])->name('fingerprint.process');
 		Route::get('/fingerprint/{fingerprint}/edit', [FingerprintController::class, 'edit'])->name('fingerprint.edit');
 		Route::patch('/fingerprint/{fingerprint}', [FingerprintController::class, 'update'])->name('fingerprint.update');
 		Route::get('/salary/overtime', [OvertimeSalaryController::class, 'index'])->name('overtime-salary.index');
 		Route::post('/salary/overtime/process', [OvertimeSalaryController::class, 'process'])->name('overtime-salary.process');
+		Route::get('/salary/overtime-export', [OvertimeSalaryController::class, 'export'])->name('overtime-salary.export');
 		Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
 		Route::post('/payroll/process', [PayrollController::class, 'process'])->name('payroll.process');
 		Route::get('/payroll-export', [PayrollController::class, 'export'])->name('payroll.export');
+	});
+
+	Route::group(['middleware' => 'can:isEditor'], function() {
+		Route::get('/tutorial', [TutorialController::class, 'index'])->name('tutorial-video.index');
 	});
 
 	// Hanya Administrator
 	Route::group(['middleware' => 'can:isAdmin'], function () {
 		Route::resource('/users-management', UsersManagementController::class);
 		Route::get('/log', [ActivityController::class, 'index'])->name('users-activity.index');
-		// Route::get('/log/{log}', [EmployeeController::class, 'show'])->name('users-activity.show');
 	});
 });

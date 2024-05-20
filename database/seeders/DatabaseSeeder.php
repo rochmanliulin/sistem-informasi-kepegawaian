@@ -15,10 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('employees')->insert([
-            'nip' => '0',
-            'nama' => 'Administrator',
-        ]);
         DB::table('users')->insert([
             'nip' => '0',
             'fullname' => 'Administrator',

@@ -26,13 +26,13 @@
 
             @cannot('isAdmin')
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#subMenuSalary">
+                <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#subMenuReport">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-folder-open text-dark text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Laporan</span>
                 </a>
-                <ul class="navbar-nav collapse {{ request()->is('user*') ? 'show' : '' }}" id="subMenuSalary">
+                <ul class="navbar-nav collapse {{ request()->is('user*') ? 'show' : '' }}" id="subMenuReport">
                     <!-- Submenu items go here -->
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'user.index' ? 'active' : '' }}" href="{{ route('user.index') }}">
@@ -79,12 +79,6 @@
                                 <span class="nav-link-text ms-2">File Excel</span>
                             </a>
                         </li>
-                        {{-- Dimatikan dahulu karena fitur masih belum jelas untuk apa --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ Route::currentRouteName() == 'fingerprint.history' ? 'active' : '' }}" href="{{ route('fingerprint.history') }}">
-                                <span class="nav-link-text ms-2">History</span>
-                            </a>
-                        </li> --}}
                         <!-- Add more submenu items as needed -->
                     </ul>
                 </li>
@@ -144,22 +138,21 @@
                 </a>
             </li>
             @endcan
+
+            @can('isEditor')
+            <li class="nav-item mt-5">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Tutorial</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::currentRouteName() == 'tutorial-video.index' ? 'active' : '' }}" href="{{ route('tutorial-video.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-video text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Video Tutorial</span>
+                </a>
+            </li>
+            @endcan
         </ul>
     </div>
-    {{-- <div class="sidenav-footer mx-3 ">
-        <div class="card card-plain shadow-none" id="sidenavCard">
-            <img class="w-50 mx-auto" src="/img/illustrations/icon-documentation-warning.svg"
-                alt="sidebar_illustration">
-            <div class="card-body text-center p-3 w-100 pt-0">
-                <div class="docs-info">
-                    <h6 class="mb-0">Need help?</h6>
-                    <p class="text-xs font-weight-bold mb-0">Please check our docs</p>
-                </div>
-            </div>
-        </div>
-        <a href="/docs/bootstrap/overview/argon-dashboard/index.html" target="_blank"
-            class="btn btn-dark btn-sm w-100 mb-3">Documentation</a>
-        <a class="btn btn-primary btn-sm mb-0 w-100"
-            href="https://www.creative-tim.com/product/argon-dashboard-pro-laravel" target="_blank" type="button">Upgrade to PRO</a>
-    </div> --}}
 </aside>

@@ -38,6 +38,11 @@ Sistem Informasi Kepegawaian adalah sistem yang dapat membantu perusahaan untuk 
 - Improve Logic When Update Data Without Change's
 - Change Alert: Swal -> Toast and Change Code to app.blade.php
 
+### Release **v1.0.3** - 20 May 2024
+
+- New Feature: Tutorial Video
+- Improve Code
+
 ## License
 
 Licensed under the [PT. Pusat Grosir Sidoarjo](https://pusatgrosirsidoarjo.com).

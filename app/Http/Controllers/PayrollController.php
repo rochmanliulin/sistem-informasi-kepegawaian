@@ -7,7 +7,6 @@ use App\Models\Payroll;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PayrollExport;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class PayrollController extends Controller
@@ -121,7 +120,6 @@ class PayrollController extends Controller
       
       return Excel::download(new PayrollExport($remark), 'Payroll ' . $remark . '.xlsx');
     } catch (\Exception $e) {
-      dd($e->getMessage());
       return back()->with('error', 'Gagal export file : ' . $e->getMessage());
     }
   }

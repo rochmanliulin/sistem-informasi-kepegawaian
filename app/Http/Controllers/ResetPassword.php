@@ -13,7 +13,7 @@ class ResetPassword extends Controller
 
     public function show()
     {
-        return view('auth.reset-password');
+        return view('auth.reset-password')->with('isPage', true);
     }
 
     public function routeNotificationForMail() {

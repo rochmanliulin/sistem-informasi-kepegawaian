@@ -24,9 +24,9 @@ class ChangePassword extends Controller
         //     abort(403, 'THIS ACTION IS UNAUTHORIZED.');
         // }
 
-        // // Ambil ID dari URL untuk mencari user
-        // $id = intval(request()->id);
-        // $this->user = User::find($id);
+        // Ambil ID dari URL untuk mencari user
+        $id = intval(request()->id);
+        $this->user = User::find($id);
 
         // // // Jika user tidak ditemukan
         // if (!$this->user) {
