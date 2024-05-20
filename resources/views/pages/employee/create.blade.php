@@ -11,18 +11,25 @@
 						<form action="{{ route('employee.store') }}" method="POST" onsubmit="return validateForm()">
 							@csrf
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label for="nip" class="form-control-label">NIP</label>
 										<input type="text" class="form-control" id="nip" placeholder="166" name="nip" required/>
 										@error('nip') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label for="nama" class="form-control-label">Nama</label>
 										<input type="text" class="form-control" id="nama" placeholder="Nama Pegawai" name="nama" required/>
 										@error('nama') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="creditedAccount" class="form-control-label">Credited Account</label>
+										<input type="text" class="form-control" id="creditedAccount" placeholder="Credited Account" name="credited_account"/>
+										@error('credited_account') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 									</div>
 								</div>
 							</div>

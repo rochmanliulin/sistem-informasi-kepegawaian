@@ -21,7 +21,6 @@ class PayrollController extends Controller
       $payroll = Payroll::whereHas('employee', function ($query) use ($search) {
                             $query->where('nama', 'LIKE', "%$search%");
                           })
-                          ->orWhere('credited_account', 'LIKE', "%$search%")
                           ->orWhere('amount', 'LIKE', "%$search%")
                           ->orWhere('nip', 'LIKE', "%$search%")
                           ->orWhere('remark', 'LIKE', "%$search%")
@@ -51,7 +50,6 @@ class PayrollController extends Controller
     $dateCode = date('ymd');
     $transferType = 'BCA';
     $remark = $request->remark;
-    // $creditedAccount
     
     if ($codeType == 1) {
       // Disable logging -> menonaktifkan log activity
@@ -67,7 +65,6 @@ class PayrollController extends Controller
           // Jika data sudah ada, lakukan pembaruan tanpa mengubah trx_id
           $existingPayroll->update([
             'transfer_type' => $transferType,
-            'credited_account' => 0,
             'amount' => $data->total,
             'remark' => $remark
           ]);
@@ -78,7 +75,6 @@ class PayrollController extends Controller
           Payroll::create([
             'trx_id' => $trxID,
             'transfer_type' => $transferType,
-            'credited_account' => 0,
             'amount' => $data->total,
             'nip' => $nip,
             'remark' => $remark

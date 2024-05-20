@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->bigInteger('nip')->primary();
             $table->string('nama');
+            $table->char('credited_account')->nullable();
             $table->string('jabatan')->nullable();
             $table->string('departemen')->nullable();
             $table->string('status')->nullable();

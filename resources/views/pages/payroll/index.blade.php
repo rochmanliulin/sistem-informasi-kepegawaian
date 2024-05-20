@@ -125,7 +125,7 @@
                     <p class="text-xs font-weight-bold mb-0 text-center"></p>
                   </td>
                   <td>
-                    <p class="text-xs font-weight-bold mb-0 text-center">{{ $item->credited_account }}</p>
+                    <p class="text-xs font-weight-bold mb-0 text-center">{{ $item->employee->credited_account }}</p>
                   </td>
                   <td>
                     <span class="badge badge-dot me-4 ps-2">

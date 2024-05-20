@@ -65,6 +65,7 @@
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">No</th>
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-3">Nama</th>
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">NIP</th>
+										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Credited Account</th>
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Jabatan</th>
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Departemen</th>
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Status</th>
@@ -90,6 +91,9 @@
 											</td>
 											<td>
 												<p class="text-xs font-weight-bold mb-0 fw-bold text-center">{{ $item->nip }}</p>
+											</td>
+											<td>
+												<p class="text-xs my-auto text-center">{{ $item->credited_account }}</p>
 											</td>
 											<td>
 												<p class="text-xs my-auto">{{ $item->jabatan }}</p>

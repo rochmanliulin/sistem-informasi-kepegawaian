@@ -117,9 +117,10 @@ class EmployeeController extends Controller
     $validated = $request->validate([
       'nip' => 'required|unique:employees',
       'nama' => 'required',
+      'credited_account' => 'nullable|max:10',
       'jabatan' => 'nullable',
       'departemen' => 'nullable',
-      'tgl_masuk_kerja' => 'nullable',
+      'tgl_masuk_kerja' => 'nullable|date',
       'status' => 'required'
     ]);
 
@@ -153,6 +154,7 @@ class EmployeeController extends Controller
   {
     $validated = $request->validate([
       'nama' => 'required',
+      'credited_account' => 'nullable',
       'jabatan' => 'nullable',
       'departemen' => 'nullable',
       'tgl_masuk_kerja' => 'nullable',
@@ -164,6 +166,7 @@ class EmployeeController extends Controller
 
       // Cek apakah data yang diberikan sama dengan data yang ada dalam database
       if ($employee->nama == $validated['nama'] &&
+          $employee->nama == $validated['credited_account'] &&
           $employee->jabatan == $validated['jabatan'] &&
           $employee->departemen == $validated['departemen'] &&
           $employee->tgl_masuk_kerja == $validated['tgl_masuk_kerja'] &&

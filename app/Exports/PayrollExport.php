@@ -25,7 +25,7 @@ class PayrollExport implements FromQuery, WithHeadings
             'payrolls.trx_id',
             'payrolls.transfer_type',
             DB::raw("''"),
-            'payrolls.credited_account',
+            'employees.credited_account',
             'employees.nama AS receiver_name',
             'payrolls.amount',
             'payrolls.nip',

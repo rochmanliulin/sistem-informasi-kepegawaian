@@ -41,6 +41,7 @@ Sistem Informasi Kepegawaian adalah sistem yang dapat membantu perusahaan untuk 
 ### Release **v1.0.3** - 20 May 2024
 
 - New Feature: Tutorial Video
+- Add Credited Account
 - Improve Code
 
 ## License
