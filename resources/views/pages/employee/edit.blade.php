@@ -33,7 +33,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="creditedAccount" class="form-control-label">Credited Account</label>
-										<input type="text" class="form-control" id="creditedAccount" placeholder="Credited Account" name="credited_account" value="{{ $employee->credited_account }}"/>
+										<input type="number" class="form-control" id="creditedAccount" placeholder="Credited Account" name="credited_account" value="{{ $employee->credited_account }}"/>
 									</div>
 								</div>
 							</div>

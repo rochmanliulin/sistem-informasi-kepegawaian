@@ -29,32 +29,17 @@
                       </tr>
                       <tr class="text-muted">
                         <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/8faDHATFJ6E"><span class="text-muted">Cara Buat Pegawai</span></a></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/ySBFrlx3uMU"><span class="text-muted">Cara Import Excel Pegawai</span></a></td>
                         <td class="col-1 text-muted small">00:48</td>
                       </tr>
                       <tr class="text-muted">
                         <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/TgkhT6clm1g"><span class="text-muted">Cara Buat Tunjangan</span></a></td>
-                        <td class="col-1 text-muted small">01:06</td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/Lpm9ZIc1zL8"><span class="text-muted">Cara Export Pegawai</span></a></td>
+                        <td class="col-1 text-muted small">00:52</td>
                       </tr>
                       <tr class="text-muted">
                         <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/GRcr6MFwrYA"><span class="text-muted">Cara Edit Fingerprint</span></a></td>
-                        <td class="col-1 text-muted small">01:10</td>
-                      </tr>
-                      <tr class="text-muted">
-                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/7Y_b78-jB9I"><span class="text-muted">Cara Import Excel Fingerprint</span></a></td>
-                        <td class="col-1 text-muted small">01:08</td>
-                      </tr>
-                      <tr class="text-muted">
-                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/NQOLxMb6otQ"><span class="text-muted">Cara Import Excel Tunjangan</span></a></td>
-                        <td class="col-1 text-muted small">01:02</td>
-                      </tr>
-                      <tr class="text-muted">
-                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/mBlEuwDtzzk"><span class="text-muted">Cara Proses Gaji Lembur</span></a></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/8faDHATFJ6E"><span class="text-muted">Cara Buat Pegawai</span></a></td>
                         <td class="col-1 text-muted small">00:48</td>
                       </tr>
                       <tr class="text-muted">
@@ -64,23 +49,48 @@
                       </tr>
                       <tr class="text-muted">
                         <td class="col-1"><i class="fas fa-play-circle"></i></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/NQOLxMb6otQ"><span class="text-muted">Cara Import Excel Tunjangan</span></a></td>
+                        <td class="col-1 text-muted small">01:02</td>
+                      </tr>
+                      <tr class="text-muted">
+                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/TgkhT6clm1g"><span class="text-muted">Cara Buat Tunjangan</span></a></td>
+                        <td class="col-1 text-muted small">01:06</td>
+                      </tr>
+                      <tr class="text-muted">
+                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
                         <td class="col-auto"><a class="link" href="https://youtu.be/-bE1npP0Jr4"><span class="text-muted">Cara Edit Tunjangan</span></a></td>
                         <td class="col-1 text-muted small">00:39</td>
                       </tr>
                       <tr class="text-muted">
                         <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/Lpm9ZIc1zL8"><span class="text-muted">Cara Export Pegawai</span></a></td>
-                        <td class="col-1 text-muted small">00:52</td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/7Y_b78-jB9I"><span class="text-muted">Cara Import Excel Fingerprint</span></a></td>
+                        <td class="col-1 text-muted small">01:08</td>
                       </tr>
                       <tr class="text-muted">
                         <td class="col-1"><i class="fas fa-play-circle"></i></td>
-                        <td class="col-auto"><a class="link" href="https://youtu.be/ySBFrlx3uMU"><span class="text-muted">Cara Import Pegawai</span></a></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/GRcr6MFwrYA"><span class="text-muted">Cara Edit Fingerprint</span></a></td>
+                        <td class="col-1 text-muted small">01:10</td>
+                      </tr>
+                      <tr class="text-muted">
+                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/mBlEuwDtzzk"><span class="text-muted">Cara Proses Gaji Lembur</span></a></td>
                         <td class="col-1 text-muted small">00:48</td>
                       </tr>
                       <tr class="text-muted">
                         <td class="col-1"><i class="fas fa-play-circle"></i></td>
                         <td class="col-auto"><a class="link" href="https://youtu.be/NNxADaBq7fw"><span class="text-muted">Cara Export Gaji Lembur</span></a></td>
                         <td class="col-1 text-muted small">01:19</td>
+                      </tr>
+                      <tr class="text-muted">
+                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/OlErHLepTGo"><span class="text-muted">Cara Proses Payroll</span></a></td>
+                        <td class="col-1 text-muted small">00:36</td>
+                      </tr>
+                      <tr class="text-muted">
+                        <td class="col-1"><i class="fas fa-play-circle"></i></td>
+                        <td class="col-auto"><a class="link" href="https://youtu.be/w6oCJp1v_zE"><span class="text-muted">Cara Export Payroll</span></a></td>
+                        <td class="col-1 text-muted small">00:39</td>
                       </tr>
                     </tbody>
                   </table>

@@ -78,8 +78,7 @@ class FingerprintController extends Controller
 			$user = Auth::user();
 			activity('Fingerprint')
 				->event('imported')
-				->performedOn(new Fingerprint())
-				->withProperties(['attributes' => ['nama' => $user->fullname]])
+				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
 				->log("imported fingerprint {$request->file('file')->getClientOriginalName()}");
 
 			return redirect('/fingerprint')->with('success', 'Berhasil upload');

@@ -10,7 +10,7 @@ class ActivityController extends Controller
     // User Activity Log
     public function index(Request $request){
         $activityLog = Activity::latest()->paginate(10);
-        $ipAddress = $request->ip();
+        $ipAddress = $request->header('X-Forwarded-For') ?? $request->ip();
 
         return view('pages.users-activity.index',[
         'logs' => $activityLog,

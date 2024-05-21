@@ -24,3 +24,6 @@ v1.0.3 - 20/05/2024
   -Release fitur baru: Video Tutorial
   -Tambah credited account pada model employee
   -Improve code
+  -Fixing Bug IP di Log Activity
+  -Tambah log activity login/logout dan download report
+  -Ubah input tipe text yang seharusnya tipe number

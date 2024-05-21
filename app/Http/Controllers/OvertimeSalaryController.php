@@ -51,8 +51,7 @@ class OvertimeSalaryController extends Controller
       $user = Auth::user();
       activity('Overtime Salary')
         ->event('exported')
-        ->performedOn(new OvertimeSalary())
-        ->withProperties(['attributes' => ['nama' => $user->fullname]])
+        ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
         ->log("exported overtime salary {$info}.xlsx");
       
       return Excel::download(new OvertimeSalaryExport($info), 'Gaji ' . $info . '.xlsx');
@@ -321,8 +320,7 @@ class OvertimeSalaryController extends Controller
 		$user = Auth::user();
 		activity('Overtime Salary')
 			->event('processed')
-			->performedOn(new OvertimeSalary())
-			->withProperties(['attributes' => ['nama' => $user->fullname]])
+			->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
 			->log("processed overtime salary {$keterangan}");
 
 		return redirect('/salary/overtime')->with('success', 'Berhasil memproses ' . $keterangan);

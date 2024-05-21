@@ -51,13 +51,13 @@
 											<td>
 												<p class="text-sm font-weight-bold mb-0 ps-3">
 													<i class="fas fa-user-shield"></i>&nbsp;
-													{{ $log->causer->fullname }}
+													{{ $log->causer->fullname ?? 'N/A' }}
 												</p>
 											</td>
 											<td class="align-middle text-sm text-center">
 												<p class="text-sm font-weight-bold mb-0">
 													<i class="fas fa-hashtag"></i>
-													{{ $ip }}
+													{{ $log->properties['ip'] ?? 'N/A' }}
 												</p>
 											</td>
 											<td class="align-middle text-sm text-end pe-4">

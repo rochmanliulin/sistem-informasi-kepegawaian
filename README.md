@@ -43,6 +43,9 @@ Sistem Informasi Kepegawaian adalah sistem yang dapat membantu perusahaan untuk 
 - New Feature: Tutorial Video
 - Add Credited Account
 - Improve Code
+- Fixing Bug IP on Log Activity
+- Add log activity login/logout dan download report
+- Change type input text should number
 
 ## License
 

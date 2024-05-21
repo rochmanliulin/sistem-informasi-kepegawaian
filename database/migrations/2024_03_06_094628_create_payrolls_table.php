@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('trx_id')->unique();
             $table->string('transfer_type');
-            $table->char('credited_account');
             $table->integer('amount');
             $table->bigInteger('nip');
             $table->string('remark');

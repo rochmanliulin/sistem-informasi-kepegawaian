@@ -51,7 +51,7 @@
 								<div class="col-md-3">
                   <div class="form-group">
                     <label for="terlambat" class="form-control-label">Terlambat</label>
-                    <input type="text" class="form-control" id="terlambat" name="terlambat" value="{{ $fingerprint->terlambat }}"/>
+                    <input type="number" class="form-control" id="terlambat" name="terlambat" value="{{ $fingerprint->terlambat }}"/>
                     @error('terlambat') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
                   </div>
                 </div>
@@ -74,21 +74,21 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="istirahat" class="form-control-label">Istirahat</label>
-										<input type="text" class="form-control" id="istirahat" name="istirahat" value="{{ $fingerprint->istirahat }}"/>
+										<input type="number" class="form-control" id="istirahat" name="istirahat" value="{{ $fingerprint->istirahat }}" readonly/>
                     @error('istirahat') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="durasi" class="form-control-label">Durasi</label>
-										<input type="text" class="form-control" id="durasi" name="durasi" value="{{ $fingerprint->durasi }}"/>
+										<input type="number" class="form-control" id="durasi" name="durasi" value="{{ $fingerprint->durasi }}"/>
                     @error('durasi') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="lemburAkhir" class="form-control-label">Lembur Akhir</label>
-										<input type="text" class="form-control" id="lemburAkhir" name="lembur_akhir" value="{{ $fingerprint->lembur_akhir }}"/>
+										<input type="number" class="form-control" id="lemburAkhir" name="lembur_akhir" value="{{ $fingerprint->lembur_akhir }}"/>
                     @error('lembur_akhir') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 									</div>
 								</div>

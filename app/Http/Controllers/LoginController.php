@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Activitylog\Models\Activity;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 
@@ -37,6 +38,10 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
+            activity('Login')
+            ->withProperties(['ip' => $request->ip()])
+            ->log("Time Login : " . now()->format('H:i:s'));
+
             // return redirect()->intended('dashboard');
 
             /// Redirect berdasarkan peran pengguna menggunakan gates
@@ -52,10 +57,16 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        activity('Logout')
+            ->causedBy($user)
+            ->withProperties(['ip' => $request->ip()])
+            ->log("Time Logout : " . now()->format('H:i:s'));
 
         return redirect('/login');
     }

@@ -70,8 +70,7 @@ class AllowanceController extends Controller
 			$user = Auth::user();
 			activity('Allowance')
 				->event('imported')
-				->performedOn(new Allowance())
-				->withProperties(['attributes' => ['nama' => $user->fullname]])
+				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
 				->log("imported allowance {$request->file('file')->getClientOriginalName()}");
 
 			return redirect('/allowance')->with('success', 'Berhasil upload');

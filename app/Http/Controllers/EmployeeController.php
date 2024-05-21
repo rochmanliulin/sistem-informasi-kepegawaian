@@ -71,7 +71,7 @@ class EmployeeController extends Controller
     $user = Auth::user();
     activity('Employee')
       ->event('imported')
-      ->withProperties(['attributes' => ['nama' => $user->fullname]])
+      ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
       ->log("imported employee {$request->file('file')->getClientOriginalName()}");
 
       return redirect('/employee')->with('success', 'Berhasil upload');
@@ -83,7 +83,7 @@ class EmployeeController extends Controller
   /**
    * Fitur Export Excel
    */
-  public function export()
+  public function export(Request $request)
   {
     // Carbon adalah library PHP untuk manipulasi tanggal dan waktu
     // now() -> Mengambil waktu saat ini
@@ -92,7 +92,7 @@ class EmployeeController extends Controller
       $user = Auth::user();
       activity('Employee')
         ->event('exported')
-        ->withProperties(['attributes' => ['nama' => $user->fullname]])
+        ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
         ->log('exported employee Data Pegawai ' . Carbon::now()->format('d-M-Y') . '.xlsx');
 
       return Excel::download(new EmployeesExport, 'Data Pegawai ' . Carbon::now()->format('d-M-Y') . '.xlsx');

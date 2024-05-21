@@ -33,14 +33,14 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="gajiPokok" class="form-control-label">Gaji Pokok</label>
-											<input type="text" class="form-control" id="gajiPokok" placeholder="Nominal Gaji" name="gaji_harian" value="{{ $allowance->gaji_harian }}"/>
+											<input type="number" class="form-control" id="gajiPokok" placeholder="Nominal Gaji" name="gaji_harian" value="{{ $allowance->gaji_harian }}"/>
 											@error('gaji_harian') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="premiHadir" class="form-control-label">Premi Hadir</label>
-											<input type="text" class="form-control" id="premiHadir" placeholder="Nominal Premi Hadir" name="premi_hadir_harian" value="{{ $allowance->premi_hadir_harian }}"/>
+											<input type="number" class="form-control" id="premiHadir" placeholder="Nominal Premi Hadir" name="premi_hadir_harian" value="{{ $allowance->premi_hadir_harian }}"/>
 											@error('premi_hadir_harian') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
@@ -55,14 +55,14 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="gajiPokok" class="form-control-label">Gaji Pokok</label>
-											<input type="text" class="form-control" id="gajiPokok" placeholder="Nominal Gaji Pokok" name="gaji_bulanan" value="{{ $allowance->gaji_bulanan }}"/>
+											<input type="number" class="form-control" id="gajiPokok" placeholder="Nominal Gaji Pokok" name="gaji_bulanan" value="{{ $allowance->gaji_bulanan }}"/>
 											@error('gaji_bulanan') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="kos" class="form-control-label">Tunjangan Kos</label>
-											<input type="text" class="form-control" id="kos" placeholder="Nominal Tunjangan Kos" name="kos" value="{{ $allowance->kos }}"/>
+											<input type="number" class="form-control" id="kos" placeholder="Nominal Tunjangan Kos" name="kos" value="{{ $allowance->kos }}"/>
 											@error('kos') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
@@ -71,42 +71,42 @@
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="masukPagi" class="form-control-label">Masuk Pagi</label>
-											<input type="text" class="form-control" id="masukPagi" placeholder="Nominal Masuk Pagi" name="masuk_pagi" value="{{ $allowance->masuk_pagi }}"/>
+											<input type="number" class="form-control" id="masukPagi" placeholder="Nominal Masuk Pagi" name="masuk_pagi" value="{{ $allowance->masuk_pagi }}"/>
 											@error('masuk_pagi') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="prestasi" class="form-control-label">Prestasi</label>
-											<input type="text" class="form-control" id="prestasi" placeholder="Nominal Prestasi" name="prestasi" value="{{ $allowance->prestasi }}"/>
+											<input type="number" class="form-control" id="prestasi" placeholder="Nominal Prestasi" name="prestasi" value="{{ $allowance->prestasi }}"/>
 											@error('prestasi') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="komunikasi" class="form-control-label">Komunikasi</label>
-											<input type="text" class="form-control" id="komunikasi" placeholder="Nominal Komunikasi" name="komunikasi" value="{{ $allowance->komunikasi }}"/>
+											<input type="number" class="form-control" id="komunikasi" placeholder="Nominal Komunikasi" name="komunikasi" value="{{ $allowance->komunikasi }}"/>
 											@error('komunikasi') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="jabatan" class="form-control-label">Jabatan</label>
-											<input type="text" class="form-control" id="jabatan" placeholder="Nominal Jabatan" name="jabatan" value="{{ $allowance->jabatan }}"/>
+											<input type="number" class="form-control" id="jabatan" placeholder="Nominal Jabatan" name="jabatan" value="{{ $allowance->jabatan }}"/>
 											@error('jabatan') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="lainLain" class="form-control-label">Lain-Lain</label>
-											<input type="text" class="form-control" id="lainLain" placeholder="Nominal Lain-Lain" name="lain_lain" value="{{ $allowance->lain_lain }}"/>
+											<input type="number" class="form-control" id="lainLain" placeholder="Nominal Lain-Lain" name="lain_lain" value="{{ $allowance->lain_lain }}"/>
 											@error('lain_lain') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="uangMakan" class="form-control-label">Uang Makan</label>
-											<input type="text" class="form-control" id="uangMakan" placeholder="Nominal Uang Makan" name="uang_makan" value="{{ $allowance->uang_makan }}"/>
+											<input type="number" class="form-control" id="uangMakan" placeholder="Nominal Uang Makan" name="uang_makan" value="{{ $allowance->uang_makan }}"/>
 											@error('uang_makan') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
@@ -115,28 +115,28 @@
 									<div class="col-md-3">
 										<div class="form-group">
 											<label for="kasbon" class="form-control-label">Kasbon</label>
-											<input type="text" class="form-control" id="kasbon" placeholder="Nominal Kasbon" name="kasbon" value="{{ $allowance->kasbon }}"/>
+											<input type="number" class="form-control" id="kasbon" placeholder="Nominal Kasbon" name="kasbon" value="{{ $allowance->kasbon }}"/>
 											@error('kasbon') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group">
 											<label for="premiHadir" class="form-control-label">Premi Hadir</label>
-											<input type="text" class="form-control" id="premiHadir" placeholder="Nominal Premi Hadir" name="premi_hadir_bulanan" value="{{ $allowance->premi_hadir_bulanan }}"/>
+											<input type="number" class="form-control" id="premiHadir" placeholder="Nominal Premi Hadir" name="premi_hadir_bulanan" value="{{ $allowance->premi_hadir_bulanan }}"/>
 											@error('premi_hadir_bulanan') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group">
 											<label for="premiLembur" class="form-control-label">Premi Lembur</label>
-											<input type="text" class="form-control" id="premiLembur" placeholder="Nominal Premi Lembur" name="premi_lembur" value="{{ $allowance->premi_lembur }}"/>
+											<input type="number" class="form-control" id="premiLembur" placeholder="Nominal Premi Lembur" name="premi_lembur" value="{{ $allowance->premi_lembur }}"/>
 											@error('premi_lembur') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group">
 											<label for="doa" class="form-control-label">Do'a</label>
-											<input type="text" class="form-control" id="doa" placeholder="Nominal Hadir Do'a" name="doa" value="{{ $allowance->doa }}"/>
+											<input type="number" class="form-control" id="doa" placeholder="Nominal Hadir Do'a" name="doa" value="{{ $allowance->doa }}"/>
 											@error('doa') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 										</div>
 									</div>

@@ -89,8 +89,7 @@ class PayrollController extends Controller
 			$user = Auth::user();
 			activity('Payroll')
 				->event('processed')
-				->performedOn(new Payroll())
-				->withProperties(['attributes' => ['nama' => $user->fullname]])
+				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
 				->log("processed payroll {$remark}");
     }
 
@@ -110,8 +109,7 @@ class PayrollController extends Controller
       $user = Auth::user();
       activity('Payroll')
         ->event('exported')
-        ->performedOn(new Payroll())
-        ->withProperties(['attributes' => ['nama' => $user->fullname]])
+        ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
         ->log("exported payroll {$remark}.xlsx");
       
       return Excel::download(new PayrollExport($remark), 'Payroll ' . $remark . '.xlsx');

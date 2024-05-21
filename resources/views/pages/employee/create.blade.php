@@ -28,7 +28,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="creditedAccount" class="form-control-label">Credited Account</label>
-										<input type="text" class="form-control" id="creditedAccount" placeholder="Credited Account" name="credited_account"/>
+										<input type="number" class="form-control" id="creditedAccount" placeholder="Credited Account" name="credited_account"/>
 										@error('credited_account') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
 									</div>
 								</div>

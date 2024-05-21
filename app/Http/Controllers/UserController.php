@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\OvertimeSalary;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -38,6 +39,11 @@ class UserController extends Controller
         $pdf = Pdf::loadView('pages.user.pdf', [
             'data' => $overtimeSalary
         ]);
+
+        activity('Report')
+            ->event('download')
+            ->withProperties(['ip' => $request->ip()])
+            ->log("Download Laporan {$keterangan}.pdf by " . Auth::user()->fullname);
 
         return $pdf->stream('Laporan '.  $keterangan . '.pdf');
     }

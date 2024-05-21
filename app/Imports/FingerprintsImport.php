@@ -43,42 +43,21 @@ class FingerprintsImport implements ToModel, WithHeadingRow
             $tgl = Carbon::createFromFormat('d-m-Y', $row['tanggal'])->format('Y-m-d');
         }
 
-        // $checkDate = Fingerprint::where('nip', $row['nip'])
-        //     ->whereDate('tgl', Carbon::createFromFormat('d-m-Y', $row['tanggal'])->format('Y-m-d'))
-        //     ->first();
+        // Create data baru jika tidak ada data Fingerprint dengan NIP dan tanggal yang sama
+        $fingerprints = Fingerprint::create([
+            'jadwal' => $row['jadwal'],
+            'tgl' => $tgl,
+            'jam_kerja' => $row['jam_kerja'],
+            'nip' => $row['nip'],
+            'terlambat' => $row['terlambat'],
+            'scan_istirahat_1' => $scanIstirahat1,
+            'scan_istirahat_2' => $scanIstirahat2,
+            'istirahat' => $row['istirahat'],
+            'durasi' => $row['durasi'],
+            'lembur_akhir' => $row['lembur_akhir']
+        ]);
 
-
-        // // Jika terdapat data Fingerprint dengan NIP dan tanggal yang sama, update data tersebut
-        // if ($checkDate) {
-        //     $checkDate->update([
-        //         'jadwal' => $row['jadwal'],
-        //         'jam_kerja' => $row['jam_kerja'],
-        //         'terlambat' => $row['terlambat'],
-        //         'scan_istirahat_1' => $scanIstirahat1,
-        //         'scan_istirahat_2' => $scanIstirahat2,
-        //         'istirahat' => $row['istirahat'],
-        //         'durasi' => $row['durasi'],
-        //         'lembur_akhir' => $row['lembur_akhir']
-        //     ]);
-
-        //     return null;
-        // } else {
-            // Create data baru jika tidak ada data Fingerprint dengan NIP dan tanggal yang sama
-            $fingerprints = Fingerprint::create([
-                'jadwal' => $row['jadwal'],
-                'tgl' => $tgl,
-                'jam_kerja' => $row['jam_kerja'],
-                'nip' => $row['nip'],
-                'terlambat' => $row['terlambat'],
-                'scan_istirahat_1' => $scanIstirahat1,
-                'scan_istirahat_2' => $scanIstirahat2,
-                'istirahat' => $row['istirahat'],
-                'durasi' => $row['durasi'],
-                'lembur_akhir' => $row['lembur_akhir']
-            ]);
-
-            return $fingerprints;
-        // }
+        return $fingerprints;
     }
 
     public function headingRow(): int
