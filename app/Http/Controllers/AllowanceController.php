@@ -96,6 +96,13 @@ class AllowanceController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		$userId = auth()->user()->id;
+
+		$request->validate([
+			'nip' => 'required',
+			'status' => 'required'
+		]);
+
 		if ($request->status === 'Pegawai Harian') {
 			$validated = $request->validate([
 				'nip' => 'required',
@@ -138,8 +145,9 @@ class AllowanceController extends Controller
 		} else {
 			return redirect('/allowance')->with('error', Allowance::where('nip', $request->nip)->first()->employee->nama . ' tidak memiliki status');
 		}
-		
+
 		try {
+			$validated['created_by'] = $userId;
 			// Create data
 			Allowance::create($validated);
 			
@@ -166,7 +174,7 @@ class AllowanceController extends Controller
 			unset($allowance['gaji']);
 			unset($allowance['premi_hadir']);
 
-		} else if ($employee->status === 'Pegawai Tetap') {
+		} else if ($employee->status === 'Pegawai Kontrak') {
 			// Konversi sesuai format database
 			$allowance['gaji_bulanan'] = $allowance['gaji'];
 			$allowance['premi_hadir_bulanan'] = $allowance['premi_hadir'];
@@ -187,6 +195,13 @@ class AllowanceController extends Controller
 	 */
 	public function update(Request $request, string $id)
 	{
+		$userId = auth()->user()->id;
+
+		$request->validate([
+			'nip' => 'required',
+			'status' => 'required'
+		]);
+
 		if ($request->status === 'Pegawai Harian') {
 			$validated = $request->validate([
 				'nip' => 'required',
@@ -194,7 +209,7 @@ class AllowanceController extends Controller
 				'premi_hadir_harian' => 'nullable'
 			]);
 
-			// Konversi sesuai format database
+		// Konversi sesuai format database
 			$validated['gaji'] = $validated['gaji_harian'];
 			$validated['premi_hadir'] = $validated['premi_hadir_harian'];
 
@@ -219,7 +234,7 @@ class AllowanceController extends Controller
 				'doa' => 'nullable',
 			]);
 
-			// Konversi sesuai format database
+		// Konversi sesuai format database
 			$validated['gaji'] = $validated['gaji_bulanan'];
 			$validated['premi_hadir'] = $validated['premi_hadir_bulanan'];
 
@@ -231,6 +246,7 @@ class AllowanceController extends Controller
 		}
 
 		try {
+			$validated['updated_by'] = $userId;
 			$allowance = Allowance::where("nip", $id)->first();
 
 			if ($request->status === 'Pegawai Harian') {

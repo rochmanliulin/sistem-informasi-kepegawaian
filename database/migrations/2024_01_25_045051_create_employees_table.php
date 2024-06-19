@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('departemen')->nullable();
             $table->string('status')->nullable();
             $table->date('tgl_masuk_kerja')->nullable();
-            $table->string('credited_account')->nullable();
             $table->timestamps();
         });
     }

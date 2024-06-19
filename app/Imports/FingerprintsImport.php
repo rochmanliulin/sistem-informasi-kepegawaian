@@ -18,7 +18,7 @@ class FingerprintsImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        
+        $userId = auth()->user()->id;
         $employee = Employee::pluck('nip')->toArray();
         $allowance = Allowance::pluck('nip')->toArray();
         
@@ -54,7 +54,8 @@ class FingerprintsImport implements ToModel, WithHeadingRow
             'scan_istirahat_2' => $scanIstirahat2,
             'istirahat' => $row['istirahat'],
             'durasi' => $row['durasi'],
-            'lembur_akhir' => $row['lembur_akhir']
+            'lembur_akhir' => $row['lembur_akhir'],
+            'created_by' => $userId
         ]);
 
         return $fingerprints;

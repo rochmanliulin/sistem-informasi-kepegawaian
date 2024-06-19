@@ -8,23 +8,30 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PayrollExport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PayrollController extends Controller
 {
   public function index(Request $request)
   {
     $search = $request->search;
-    $overtimeSalaryData = OvertimeSalary::distinct()->pluck('keterangan')->toArray();
+    $overtimeSalaryData = OvertimeSalary::select('keterangan', DB::raw("DATE_FORMAT(tgl_terbit, '%d %M %Y') as formatted_tgl_terbit"))
+      ->distinct()
+      ->get()
+      ->map(function ($item) {
+        return $item->keterangan . ' (' . $item->formatted_tgl_terbit . ')';
+      })
+      ->toArray();
     $remark = Payroll::distinct()->pluck('remark')->toArray();
 
     if ($search) {
       $payroll = Payroll::whereHas('employee', function ($query) use ($search) {
-                            $query->where('nama', 'LIKE', "%$search%");
-                          })
-                          ->orWhere('amount', 'LIKE', "%$search%")
-                          ->orWhere('nip', 'LIKE', "%$search%")
-                          ->orWhere('remark', 'LIKE', "%$search%")
-                          ->paginate(10);
+        $query->where('nama', 'LIKE', "%$search%");
+      })
+        ->orWhere('amount', 'LIKE', "%$search%")
+        ->orWhere('nip', 'LIKE', "%$search%")
+        ->orWhere('remark', 'LIKE', "%$search%")
+        ->paginate(10);
     } else {
       $payroll = Payroll::paginate(10);
     }
@@ -39,6 +46,8 @@ class PayrollController extends Controller
 
   public function process(Request $request)
   {
+    $userId = auth()->user()->id;
+
     $request->validate([
       'salary_type' => 'required',
       'remark' => 'required',
@@ -50,23 +59,24 @@ class PayrollController extends Controller
     $dateCode = date('ymd');
     $transferType = 'BCA';
     $remark = $request->remark;
-    
+
     if ($codeType == 1) {
       // Disable logging -> menonaktifkan log activity
-			activity()->disableLogging();
+      activity()->disableLogging();
 
       $overtimeSalaryData = OvertimeSalary::where('keterangan', $date)->get();
 
       foreach ($overtimeSalaryData as $data) {
         $nip = $data->nip;
         $existingPayroll = Payroll::where('nip', $nip)->where('remark', $remark)->first();
-        
+
         if ($existingPayroll) {
           // Jika data sudah ada, lakukan pembaruan tanpa mengubah trx_id
           $existingPayroll->update([
             'transfer_type' => $transferType,
             'amount' => $data->total,
-            'remark' => $remark
+            'remark' => $remark,
+            'updated_by' => $userId
           ]);
         } else {
           // Jika data belum ada, buat data baru dengan trx_id baru
@@ -77,7 +87,8 @@ class PayrollController extends Controller
             'transfer_type' => $transferType,
             'amount' => $data->total,
             'nip' => $nip,
-            'remark' => $remark
+            'remark' => $remark,
+            'created_by' => $userId
           ]);
         }
       }
@@ -86,11 +97,11 @@ class PayrollController extends Controller
       activity()->enableLogging();
 
       // Log activity
-			$user = Auth::user();
-			activity('Payroll')
-				->event('processed')
-				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-				->log("processed payroll {$remark}");
+      $user = Auth::user();
+      activity('Payroll')
+        ->event('processed')
+        ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
+        ->log("processed payroll {$remark}");
     }
 
     return redirect('/payroll')->with('success', 'Berhasil memproses Payroll');
@@ -111,7 +122,7 @@ class PayrollController extends Controller
         ->event('exported')
         ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
         ->log("exported payroll {$remark}.xlsx");
-      
+
       return Excel::download(new PayrollExport($remark), 'Payroll ' . $remark . '.xlsx');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal export file : ' . $e->getMessage());

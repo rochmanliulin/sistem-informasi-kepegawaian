@@ -27,3 +27,12 @@ v1.0.3 - 20/05/2024
   -Fixing Bug IP di Log Activity
   -Tambah log activity login/logout dan download report
   -Ubah input tipe text yang seharusnya tipe number
+
+v1.0.4 - 19/06/2024
+  -Bug fixing pegawai yang memperoleh premi lembur
+  -Bug fixing pegawai yang telah dihapus tidak muncul pada menu payroll(soft delete)
+  -Bug fixing edit tunjangan pada pegawai yang memiliki status kontrak
+  -Bug fixing tanggal export gaji lembur
+  -Bug fixing tanggal generate payroll
+  -Tambah kolom created_by, updated_by, dan deleted_by pada tabel employee
+  -Tambah kolom created_by dan updated_by pada tabel allowances, fingerprints, overtime_salaries, dan payrolls

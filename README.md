@@ -44,8 +44,19 @@ Sistem Informasi Kepegawaian adalah sistem yang dapat membantu perusahaan untuk 
 - Add Credited Account
 - Improve Code
 - Fixing Bug IP on Log Activity
-- Add log activity login/logout dan download report
-- Change type input text should number
+- Add Log Activity Login/Logout and Download Report
+- Change Type Input Text Should Number
+
+### Release **v1.0.4** - 19 June 2024
+
+- Bug Fixing: Employee Get Premi Lembur
+- Bug Fixing: Name and Credited Account Employee Can't Show on Payroll Menu
+- Bug Fixing: Edit Allowance Employee Status: Pegawai Kontrak
+- Bug Fixing: Input Export Date Overtime Salaries
+- Bug Fixing: Input Date Generate Payroll
+- Add Column on Database:
+  - created_by, updated_by, and deleted_by on employees table
+  - created and updated_by on allowances, fingerprints, overtime_salaries, and payrolls
 
 ## License
 

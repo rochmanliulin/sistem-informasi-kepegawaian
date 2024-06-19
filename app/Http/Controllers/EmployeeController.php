@@ -114,6 +114,8 @@ class EmployeeController extends Controller
    */
   public function store(Request $request)
   {
+    $userId = auth()->user()->id;
+
     $validated = $request->validate([
       'nip' => 'required|unique:employees',
       'nama' => 'required',
@@ -125,6 +127,7 @@ class EmployeeController extends Controller
     ]);
 
     try {
+      $validated['created_by'] = $userId;
       // Create data
       Employee::create($validated);
 
@@ -152,6 +155,8 @@ class EmployeeController extends Controller
    */
   public function update(Request $request, string $id)
   {
+    $userId = auth()->user()->id;
+
     $validated = $request->validate([
       'nama' => 'required',
       'credited_account' => 'nullable',
@@ -162,6 +167,7 @@ class EmployeeController extends Controller
     ]);
 
     try {
+      $validated['updated_by'] = $userId;
       $employee = Employee::where("nip", $id)->first();
 
       // Cek apakah data yang diberikan sama dengan data yang ada dalam database
@@ -188,8 +194,12 @@ class EmployeeController extends Controller
    */
   public function destroy(string $id)
   {
+    $userId = auth()->user()->id;
+
     try {
       $employee = Employee::where('nip', $id)->first();
+      $employee->deleted_by = $userId;
+      $employee->save(); // Simpan perubahan dahulu
       $employee->delete();
 
       // strtolower() -> Convert ke lower case

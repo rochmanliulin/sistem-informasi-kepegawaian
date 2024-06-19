@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('trx_id')->unique();
+            $table->integer('trx_id')->unique();
             $table->string('transfer_type');
             $table->integer('amount');
             $table->bigInteger('nip');
             $table->string('remark');
             $table->timestamps();
+
+            $table->foreign('nip')->references('nip')->on('overtime_salaries')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

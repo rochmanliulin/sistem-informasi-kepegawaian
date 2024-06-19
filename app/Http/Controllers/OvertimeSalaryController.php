@@ -9,6 +9,7 @@ use App\Models\Fingerprint;
 use App\Models\OvertimeSalary;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class OvertimeSalaryController extends Controller
 {
@@ -18,17 +19,26 @@ class OvertimeSalaryController extends Controller
 	public function index(Request $request)
 	{
 		$search = $request->search;
-		$info = OvertimeSalary::distinct()->pluck('keterangan')->toArray();
+		// Ambil distinct keterangan dan tgl_terbit
+		$info = OvertimeSalary::select('keterangan', DB::raw("DATE_FORMAT(tgl_terbit, '%d %M %Y') as formatted_tgl_terbit"))
+			->distinct()
+			->get()
+			->map(function ($item) {
+				return $item->keterangan . ' (' . $item->formatted_tgl_terbit . ')';
+			})
+			->toArray();
 
 		if ($search) {
 			$overtimeSalary = OvertimeSalary::whereHas('employee', function ($query) use ($search) {
-																					$query->where('nama', 'LIKE', "%$search%");
-																				})
-																				->orWhere('keterangan', 'LIKE', "%$search%")
-																				->orWhere('tgl_terbit', 'LIKE', "%$search%")
-																				->paginate(10);
+				$query->where('nama', 'LIKE', "%$search%");
+			})
+				->orWhere('keterangan', 'LIKE', "%$search%")
+				->orWhere('tgl_terbit', 'LIKE', "%$search%")
+				->paginate(10);
 		} else {
-			$overtimeSalary = OvertimeSalary::paginate(10);
+			$overtimeSalary = OvertimeSalary::orderBy('created_at', 'desc')
+				->orderBy('nip', 'asc')
+				->paginate(10);
 		}
 
 		return view('pages.salary.index_overtime', [
@@ -47,17 +57,17 @@ class OvertimeSalaryController extends Controller
 		$info = $request->info;
 
 		try {
-      // Log activity
-      $user = Auth::user();
-      activity('Overtime Salary')
-        ->event('exported')
-        ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-        ->log("exported overtime salary {$info}.xlsx");
-      
-      return Excel::download(new OvertimeSalaryExport($info), 'Gaji ' . $info . '.xlsx');
-    } catch (\Exception $e) {
-      return back()->with('error', 'Gagal export file : ' . $e->getMessage());
-    }
+			// Log activity
+			$user = Auth::user();
+			activity('Overtime Salary')
+				->event('exported')
+				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
+				->log("exported overtime salary {$info}.xlsx");
+
+			return Excel::download(new OvertimeSalaryExport($info), 'Gaji ' . $info . '.xlsx');
+		} catch (\Exception $e) {
+			return back()->with('error', 'Gagal export file : ' . $e->getMessage());
+		}
 	}
 
 	/**
@@ -65,8 +75,11 @@ class OvertimeSalaryController extends Controller
 	 */
 	public function process(Request $request)
 	{
+		$userId = auth()->user()->id;
+
 		$request->validate([
 			'range_tgl' => 'required|string',
+			'jumlah_hari_kerja' => 'required|numeric',
 			'tgl_terbit' => 'required|string'
 		]);
 
@@ -75,11 +88,14 @@ class OvertimeSalaryController extends Controller
 		$startDate = $dates[0];
 		$endDate = $dates[1];
 
-		// Tanggal terbit
-		$tglTerbit = $request->tgl_terbit;
-
 		// Field Keterangan
 		$keterangan = 'Slip Lembur ' . date('j', strtotime($startDate)) . '-' . date('j F Y', strtotime($endDate));
+
+		// Jumlah hari kerja
+		$jumlahHariKerja = (int) $request->jumlah_hari_kerja;
+
+		// Tanggal terbit
+		$tglTerbit = $request->tgl_terbit;
 
 		// Array asosiatif untuk menyimpan data per NIP
 		$totalDataPerNIP = [];
@@ -103,7 +119,7 @@ class OvertimeSalaryController extends Controller
 			$uangMakan = 0;
 			$uangKopi = 0;
 			$uangLemburMinggu = 0;
-			
+
 			// Inisialisasi data jika NIP belum ada di array totalDataPerNIP
 			if (!isset($totalDataPerNIP[$nip])) {
 				$totalDataPerNIP[$nip] = [
@@ -127,7 +143,7 @@ class OvertimeSalaryController extends Controller
 			}
 
 			// Hitung uang lembur dan uang makan
-			if ($jadwal !== 'Lembur') {
+			if ($jadwal !== 'Lembur' || $jamKerja !== 'Libur Rutin') {
 				$uangLembur = $data->calculateUangLembur();
 				$uangMakan = $data->calculateUangMakan();
 			}
@@ -152,7 +168,7 @@ class OvertimeSalaryController extends Controller
 				// Tidak check lock istirahat
 				if ($scanIstirahatMasuk === null && $scanIstirahatKembali === null) {
 					$totalDataPerNIP[$nip]['tidak_istirahat']++;
-				} 
+				}
 
 				// Tidak check lock masuk
 				if ($scanIstirahatMasuk === null) {
@@ -172,7 +188,7 @@ class OvertimeSalaryController extends Controller
 				} else {
 					$totalDataPerNIP[$nip]['lebih_istirahat'] += 0;
 				}
-			} else if ($jamKerja === 'JUMAT REG' || $jamKerja === 'JUMAT ADMIN' || $jamKerja === 'JUMAT HARIAN' || $jamKerja === "JADWAL PACKING SHIFT 1 JUM'AT" ) {
+			} else if ($jamKerja === 'JUMAT REG' || $jamKerja === 'JUMAT ADMIN' || $jamKerja === 'JUMAT HARIAN' || $jamKerja === "JADWAL PACKING SHIFT 1 JUM'AT") {
 				if ($istirahat >= 90) {
 					$totalDataPerNIP[$nip]['lebih_istirahat'] += $istirahat - 90;
 				} else {
@@ -192,7 +208,7 @@ class OvertimeSalaryController extends Controller
 			$totalDataPerNIP[$nip]['total_uang_kopi'] += $uangKopi;
 			$totalDataPerNIP[$nip]['total_uang_lembur_minggu'] += $uangLemburMinggu;
 		}
-		
+
 		// Query untuk mendapatkan jumlah hari aktif per NIP
 		$hariAktifQuery = Fingerprint::whereBetween('tgl', [$startDate, $endDate])
 			->whereNotIn('jam_kerja', ['Libur Rutin', 'Tidak Hadir', ''])
@@ -210,11 +226,11 @@ class OvertimeSalaryController extends Controller
 				$totalDataPerNIP[$nip]['hari_aktif'] = $totalHariAktif;
 			}
 		}
-		
+
 		// Query untuk mendapatkan syarat premi lembur dan hadir per NIP
 		$syaratPremiLemburQuery = Fingerprint::whereBetween('tgl', [$startDate, $endDate])->select('nip', 'jadwal', 'jam_kerja', 'lembur_akhir');
-    $syaratPremiLembur = $syaratPremiLemburQuery->get();
-		
+		$syaratPremiLembur = $syaratPremiLemburQuery->get();
+
 		// Olah data premi hadir, lembur, dan gaji
 		foreach ($syaratPremiLembur as $data) {
 			$nip = $data->nip;
@@ -229,11 +245,11 @@ class OvertimeSalaryController extends Controller
 				}
 
 				// Logika premi
-				if ($totalDataPerNIP[$nip]['hari_aktif'] === 6 && $jadwal !== 'Lembur') {
+				if ($totalDataPerNIP[$nip]['hari_aktif'] === $jumlahHariKerja && $jadwal !== 'Lembur' && $jamKerja !== 'Libur Rutin') {
 					// Syarat mendapatkan premi lembur
-					if (strpos($jamKerja, 'Sabtu') === false && $durasiLembur >= 120) {
+					if (stripos($jamKerja, 'SABTU') !== false && $durasiLembur >= 120) {
 						$totalDataPerNIP[$nip]['syarat_premi_lembur']++;
-					} else if (strpos($jamKerja, 'Sabtu') !== false && $durasiLembur >= 180) {
+					} else if (stripos($jamKerja, 'SABTU') === false && $durasiLembur >= 180) {
 						$totalDataPerNIP[$nip]['syarat_premi_lembur']++;
 					}
 				}
@@ -243,16 +259,16 @@ class OvertimeSalaryController extends Controller
 				}
 			}
 		}
-		
+
 		$premi = Allowance::all();
-		
+
 		foreach ($premi as $data) {
 			$nip = $data->nip;
 			$doa = $data->doa;
 			$premiHadir  = $data->premi_hadir;
 			$premiLembur = $data->premi_lembur;
 			$gaji = $data->gaji;
-			
+
 			if (isset($totalDataPerNIP[$nip])) {
 				// Update data doa
 				if (!is_null($doa)) {
@@ -263,22 +279,22 @@ class OvertimeSalaryController extends Controller
 				if (!is_null($gaji)) {
 					$totalDataPerNIP[$nip]['gaji'] = $gaji * $totalDataPerNIP[$nip]['hari_aktif'];
 				}
-				
-				if ($totalDataPerNIP[$nip]['hari_aktif'] === 6) {
+
+				if ($totalDataPerNIP[$nip]['hari_aktif'] === $jumlahHariKerja) {
 					// Premi hadir
 					if (!is_null($premiHadir)) {
 						$totalDataPerNIP[$nip]['premi'] = $premiHadir;
 					}
-					
+
 					// Premi lembur
-					if ($totalDataPerNIP[$nip]['syarat_premi_lembur'] == 6 && !is_null($premiLembur)) {
+					if ($totalDataPerNIP[$nip]['syarat_premi_lembur'] === $jumlahHariKerja && !is_null($premiLembur)) {
 						$totalDataPerNIP[$nip]['premi'] = $premiLembur;
 					}
 				}
-				
+
 				// Hitung total
 				$totalDataPerNIP[$nip]['total'] = $totalDataPerNIP[$nip]['total_uang_lembur'] + $totalDataPerNIP[$nip]['doa'] +
-																					$totalDataPerNIP[$nip]['premi'] + $totalDataPerNIP[$nip]['gaji'] + $totalDataPerNIP[$nip]['total_uang_kopi'] + $totalDataPerNIP[$nip]['total_uang_lembur_minggu'] + $totalDataPerNIP[$nip]['total_uang_makan'];
+					$totalDataPerNIP[$nip]['premi'] + $totalDataPerNIP[$nip]['gaji'] + $totalDataPerNIP[$nip]['total_uang_kopi'] + $totalDataPerNIP[$nip]['total_uang_lembur_minggu'] + $totalDataPerNIP[$nip]['total_uang_makan'];
 			}
 		}
 
@@ -309,6 +325,10 @@ class OvertimeSalaryController extends Controller
 					'tidak_istirahat_masuk' => $data['tidak_istirahat_masuk'],
 					'tidak_istirahat_kembali' => $data['tidak_istirahat_kembali'],
 					'lebih_istirahat' => $data['lebih_istirahat'],
+					'updated_by' => $userId,
+				],
+				[
+					'created_by' => $userId,
 				]
 			);
 		}

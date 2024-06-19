@@ -42,6 +42,8 @@ class UsersManagementController extends Controller
    */
   public function store(Request $request)
   {
+    $userId = auth()->user()->id;
+
     $validated = $request->validate([
       'nip' => 'required',
       'fullname' => 'required',
@@ -72,18 +74,11 @@ class UsersManagementController extends Controller
     }
 
     $validated['whatsapp_number'] = $whatsappNumber;
+    $validated['created_by'] = $userId;
 
     User::create($validated);
 
     return redirect('/users-management')->with('success', 'User berhasil ditambahkan');
-  }
-
-  /**
-   * Display the specified resource.
-   */
-  public function show(string $id)
-  {
-    //
   }
 
   /**
@@ -103,6 +98,8 @@ class UsersManagementController extends Controller
    */
   public function update(Request $request, string $id)
   {
+    $userId = auth()->user()->id;
+
     $validated = $request->validate([
       'nip' => 'required',
       'fullname' => 'required',
@@ -133,6 +130,7 @@ class UsersManagementController extends Controller
     $validated['whatsapp_number'] = $whatsappNumber;
 
     try {
+      $validated['updated_by'] = $userId;
       $user = User::where('id', $id)->first();
       
       // Cek apakah data yang diberikan sama dengan data yang ada dalam database

@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class OvertimeSalaryExport implements FromQuery, WithHeadings
 {
@@ -20,32 +21,38 @@ class OvertimeSalaryExport implements FromQuery, WithHeadings
 
     public function query()
     {
+        // Memisahkan keterangan dan tgl_terbit dari $this->info
+        preg_match('/^(.*)\s\((.*)\)$/', $this->info, $matches);
+        $keterangan = $matches[1];
+        $tgl_terbit = Carbon::createFromFormat('d F Y', $matches[2])->format('Y-m-d');
+
         return OvertimeSalary::query()
-        ->select(
-            DB::raw('ROW_NUMBER() OVER(ORDER BY overtime_salaries.id) AS no'),
-            'overtime_salaries.nip',
-            'employees.nama',
-            'overtime_salaries.total_uang_lembur',
-            'overtime_salaries.doa',
-            'overtime_salaries.premi',
-            'overtime_salaries.gaji',
-            'overtime_salaries.total_uang_kopi',
-            'overtime_salaries.total_uang_lembur_minggu',
-            'overtime_salaries.total_uang_makan',
-            'overtime_salaries.total',
-            'overtime_salaries.keterangan',
-            'overtime_salaries.hari_aktif',
-            'overtime_salaries.total_jam_lembur',
-            'overtime_salaries.tgl_terbit',
-            'overtime_salaries.hari_terlambat',
-            'overtime_salaries.total_terlambat',
-            'overtime_salaries.tidak_istirahat',
-            'overtime_salaries.tidak_istirahat_masuk',
-            'overtime_salaries.tidak_istirahat_kembali',
-            'overtime_salaries.lebih_istirahat',
-        )
-        ->leftJoin('employees', 'overtime_salaries.nip', '=', 'employees.nip')
-        ->where('keterangan', $this->info);
+            ->select(
+                DB::raw('ROW_NUMBER() OVER(ORDER BY overtime_salaries.id) AS no'),
+                'overtime_salaries.nip',
+                'employees.nama',
+                'overtime_salaries.total_uang_lembur',
+                'overtime_salaries.doa',
+                'overtime_salaries.premi',
+                'overtime_salaries.gaji',
+                'overtime_salaries.total_uang_kopi',
+                'overtime_salaries.total_uang_lembur_minggu',
+                'overtime_salaries.total_uang_makan',
+                'overtime_salaries.total',
+                'overtime_salaries.keterangan',
+                'overtime_salaries.hari_aktif',
+                'overtime_salaries.total_jam_lembur',
+                'overtime_salaries.tgl_terbit',
+                'overtime_salaries.hari_terlambat',
+                'overtime_salaries.total_terlambat',
+                'overtime_salaries.tidak_istirahat',
+                'overtime_salaries.tidak_istirahat_masuk',
+                'overtime_salaries.tidak_istirahat_kembali',
+                'overtime_salaries.lebih_istirahat',
+            )
+            ->leftJoin('employees', 'overtime_salaries.nip', '=', 'employees.nip')
+            ->where('keterangan', $keterangan)
+            ->whereDate('tgl_terbit', $tgl_terbit);
     }
 
     public function headings(): array

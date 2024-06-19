@@ -17,6 +17,8 @@ class EmployeesImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
+        $userId = auth()->user()->id;
+
         // Ubah format tanggal
         $tglMasukKerja = null;
         if (!empty($row['tgl_masuk_kerja'])) {
@@ -37,6 +39,10 @@ class EmployeesImport implements ToModel, WithHeadingRow
                 'departemen' => $row['departemen'],
                 'status' => $row['status'],
                 'tgl_masuk_kerja' => $tglMasukKerja,
+                'updated_by' => $userId,
+            ],
+            [
+                'created_by' => $userId,
             ]
         );
 

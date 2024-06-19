@@ -106,6 +106,8 @@ class FingerprintController extends Controller
 	 */
 	public function update(Request $request, string $id)
 	{
+		$userId = auth()->user()->id;
+
 		$validated = $request->validate([
 			'jadwal' => 'required',
 			'tgl' => 'required',
@@ -119,6 +121,7 @@ class FingerprintController extends Controller
 		]);
 
 		try {
+			$validated['updated_by'] = $userId;
 			$fingerprint = Fingerprint::where("id", $id)->first();
 
 			// Cek apakah data yang diberikan sama dengan data yang ada dalam database

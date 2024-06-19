@@ -17,6 +17,12 @@
 										<input type="text" class="form-control date-range bg-white" placeholder="Pilih tanggal awal dan akhir" onfocus="focused(this)" onfocusout="defocused(this)" name="range_tgl">
 									</div>
 								</div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                      <label class="form-control-label">Jumlah Hari Kerja</label>
+                      <input type="number" class="form-control" name="jumlah_hari_kerja" required>
+                  </div>
+                </div>
 								<div class="col-md-2">
 									<div class="form-group">
 										<label class="form-control-label">Tanggal Terbit</label>

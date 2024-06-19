@@ -125,12 +125,12 @@
                     <p class="text-xs font-weight-bold mb-0 text-center"></p>
                   </td>
                   <td>
-                    <p class="text-xs font-weight-bold mb-0 text-center">{{ $item->employee->credited_account }}</p>
+                    <p class="text-xs font-weight-bold mb-0 text-center">{{ $item->employee->credited_account ?? '-' }}</p>
                   </td>
                   <td>
                     <span class="badge badge-dot me-4 ps-2">
                       <i class="bg-info"></i>
-                      <span class="text-dark text-xs">{{ $item->employee->nama }}</span>
+                      <span class="text-dark text-xs">{{ $item->employee->nama ?? '-' }}</span>
                     </span>
                   </td>
                   <td>
@@ -142,18 +142,10 @@
                   <td>
                     <p class="text-xs my-auto text-center">{{ $item->remark }}</p>
                   </td>
-                  <td>
-                    <p class="text-xs my-auto text-center"></p>
-                  </td>
-                  <td>
-                    <p class="text-xs my-auto text-center"></p>
-                  </td>
-                  <td>
-                    <p class="text-xs my-auto text-center"></p>
-                  </td>
-                  <td>
-                    <p class="text-xs my-auto text-center"></p>
-                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 @endforeach
               </tbody>
