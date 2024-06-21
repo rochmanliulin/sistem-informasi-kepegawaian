@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OvertimeSalary;
+use Carbon\Carbon;
 use App\Models\Payroll;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PayrollExport;
-use Illuminate\Support\Facades\Auth;
+use App\Models\OvertimeSalary;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PayrollController extends Controller
 {
@@ -59,13 +60,18 @@ class PayrollController extends Controller
     $dateCode = date('ymd');
     $transferType = 'BCA';
     $remark = $request->remark;
-
+    
+    // Memisahkan keterangan dan tgl_terbit dari $this->info
+    preg_match('/^(.*)\s\((.*)\)$/', $date, $matches);
+    $keterangan = $matches[1];
+    $tgl_terbit = Carbon::createFromFormat('d F Y', $matches[2])->format('Y-m-d');
+    
     if ($codeType == 1) {
       // Disable logging -> menonaktifkan log activity
       activity()->disableLogging();
-
-      $overtimeSalaryData = OvertimeSalary::where('keterangan', $date)->get();
-
+      
+      $overtimeSalaryData = OvertimeSalary::where('keterangan', $keterangan)->whereDate('tgl_terbit', $tgl_terbit)->get();
+      
       foreach ($overtimeSalaryData as $data) {
         $nip = $data->nip;
         $existingPayroll = Payroll::where('nip', $nip)->where('remark', $remark)->first();
