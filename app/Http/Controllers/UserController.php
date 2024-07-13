@@ -40,11 +40,6 @@ class UserController extends Controller
             'data' => $overtimeSalary
         ]);
 
-        activity('Report')
-            ->event('download')
-            ->withProperties(['ip' => $request->ip()])
-            ->log("Download Laporan {$keterangan}.pdf by " . Auth::user()->fullname);
-
         return $pdf->stream('Laporan '.  $keterangan . '.pdf');
     }
 }

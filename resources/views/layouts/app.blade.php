@@ -27,13 +27,13 @@
     @endguest
 
     @auth
-        @if (in_array(request()->route()->getName(), ['sign-in-static', 'sign-up-static', 'login', 'register', 'recover-password', 'rtl', 'virtual-reality']))
+        @if (in_array(request()->route()->getName(), ['login', 'register', 'recover-password']))
             @yield('content')
         @else
             @if (!in_array(request()->route()->getName(), ['profile', 'profile-static']))
                 @if (request()->route()->getName() !== 'home')
                     {{-- @dd(request()->route()->getName()) --}}
-                    <div class="min-height-300 bg-dark position-absolute w-100" @style('z-index: -1 !important')></div>
+                    <div class="min-height-300 bg-dark position-absolute w-100" style="z-index: -1 !important"></div>
                 @endif
             @elseif (in_array(request()->route()->getName(), ['profile-static', 'profile']))
                 <div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg'); background-position-y: 50%;">

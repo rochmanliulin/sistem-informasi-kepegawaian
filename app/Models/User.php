@@ -3,18 +3,15 @@
 namespace App\Models;
 
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Request;
-use Spatie\Activitylog\Models\Activity;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, LogsActivity;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -30,19 +27,6 @@ class User extends Authenticatable
         'whatsapp_number',
         'profile_image'
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-                ->logAll()
-                ->setDescriptionForEvent(fn(string $eventName) => "{$eventName} user data")
-                ->useLogName('User');
-    }
-
-    public function tapActivity(Activity $activity, string $eventName)
-    {
-        $activity->properties = $activity->properties->merge(['ip' => Request::ip()]);
-    }
 
     /**
      * The attributes that should be hidden for serialization.

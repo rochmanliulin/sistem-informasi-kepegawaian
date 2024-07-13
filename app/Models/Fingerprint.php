@@ -2,34 +2,17 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
-use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Fingerprint extends Model
 {
-	use HasFactory, LogsActivity;
+	use HasFactory;
 
 	protected $guarded = [
 		'id'
 	];
-
-	// User Activity Log
-	public function getActivitylogOptions(): LogOptions
-	{
-			return LogOptions::defaults()
-							->logAll()
-							->setDescriptionForEvent(fn(string $eventName) => "{$eventName} fingerprint data")
-							->useLogName('Fingerprint');
-	}
-
-	public function tapActivity(Activity $activity, string $eventName)
-    {
-        $activity->properties = $activity->properties->merge(['ip' => Request::ip()]);
-    }
 
 	// Relasi
 	public function employee()

@@ -58,6 +58,13 @@ Sistem Informasi Kepegawaian adalah sistem yang dapat membantu perusahaan untuk 
   - created_by, updated_by, and deleted_by on employees table
   - created and updated_by on allowances, fingerprints, overtime_salaries, and payrolls
 
+### Release **v2.0.0** - 12 July 2024
+
+- Downgrade Laravel v10 -> v8
+- Change employee export results column to Tanggal Masuk -> Tgl Masuk Kerja
+- Disable the activity log feature
+- Change appearance of the activity log menu
+
 ## License
 
 Licensed under the [PT. Pusat Grosir Sidoarjo](https://pusatgrosirsidoarjo.com).

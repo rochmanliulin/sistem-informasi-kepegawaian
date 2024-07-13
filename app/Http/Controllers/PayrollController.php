@@ -67,9 +67,6 @@ class PayrollController extends Controller
     $tgl_terbit = Carbon::createFromFormat('d F Y', $matches[2])->format('Y-m-d');
     
     if ($codeType == 1) {
-      // Disable logging -> menonaktifkan log activity
-      activity()->disableLogging();
-      
       $overtimeSalaryData = OvertimeSalary::where('keterangan', $keterangan)->whereDate('tgl_terbit', $tgl_terbit)->get();
       
       foreach ($overtimeSalaryData as $data) {
@@ -98,16 +95,6 @@ class PayrollController extends Controller
           ]);
         }
       }
-
-      // Enable logging -> mengaktifkan kembali log activity
-      activity()->enableLogging();
-
-      // Log activity
-      $user = Auth::user();
-      activity('Payroll')
-        ->event('processed')
-        ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-        ->log("processed payroll {$remark}");
     }
 
     return redirect('/payroll')->with('success', 'Berhasil memproses Payroll');
@@ -122,13 +109,6 @@ class PayrollController extends Controller
     $remark = $request->remark;
 
     try {
-      // Log activity
-      $user = Auth::user();
-      activity('Payroll')
-        ->event('exported')
-        ->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-        ->log("exported payroll {$remark}.xlsx");
-
       return Excel::download(new PayrollExport($remark), 'Payroll ' . $remark . '.xlsx');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal export file : ' . $e->getMessage());

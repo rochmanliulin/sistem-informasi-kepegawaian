@@ -25,8 +25,6 @@
                         {{ auth()->user()->fullname }}
                     </a>
                     <ul class="dropdown-menu" style="top: 0!important;">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li>
                             <form role="form" method="post" action="{{ route('logout') }}" id="logout-form">
                                 @csrf

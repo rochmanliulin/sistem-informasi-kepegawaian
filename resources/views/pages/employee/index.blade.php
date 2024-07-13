@@ -14,10 +14,10 @@
 			</div>
 		</div>
 		<div class="row pt-5 mb-3">
-			<div class="col-md-2 ms-lg-5 btn-crud" style="z-index: 1 !important">
+			<div class="col-md-2 ms-lg-5 btn-crud">
 				<a href="{{ route('employee.create') }}"><button type="button" class="btn btn-block bg-gradient-info"><i class="fas fa-plus"></i>&nbsp;&nbsp;Tambah Data</button></a>
 			</div>
-			<div class="col-md-2 btn-crud">
+			<div class="col-md-2">
 				<button type="button" class="btn btn-block bg-gradient-success mb-3" data-bs-toggle="modal" data-bs-target="#modal-import"><i class="fas fa-upload"></i>&nbsp;&nbsp;Import Excel</button>
 				<div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import" aria-hidden="true">
 					<div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">

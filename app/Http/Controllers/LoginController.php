@@ -33,14 +33,10 @@ class LoginController extends Controller
         ]);
 
         $remember = $request->filled('remember');
-
+        
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             $user = Auth::user();
-
-            activity('Login')
-            ->withProperties(['ip' => $request->ip()])
-            ->log("Time Login : " . now()->format('H:i:s'));
 
             // return redirect()->intended('dashboard');
 
@@ -62,11 +58,6 @@ class LoginController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        activity('Logout')
-            ->causedBy($user)
-            ->withProperties(['ip' => $request->ip()])
-            ->log("Time Logout : " . now()->format('H:i:s'));
 
         return redirect('/login');
     }

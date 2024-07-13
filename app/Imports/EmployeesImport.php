@@ -18,17 +18,23 @@ class EmployeesImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $userId = auth()->user()->id;
-
-        // Ubah format tanggal
-        $tglMasukKerja = null;
-        if (!empty($row['tgl_masuk_kerja'])) {
+        $tglMasukKerjaFromExcel = $row['tgl_masuk_kerja'];
+        
+        if (!empty($tglMasukKerjaFromExcel)) {
             /**
-             * Dikarenakan format kolom tanggal masuk kerja di file excel mempresentasikan serial number atau jumlah hari sejak 1 Januari 1900 (di Excel), maka harus di konversi ke tanggal yuang sesuai
+             * Dikarenakan format kolom tanggal masuk kerja di file excel mempresentasikan serial number atau Excel menganggap 1 Januari 1900 sebagai hari pertama (nomor seri 1), jadi kita mulai dari 30 Desember 1899. Maka harus di konversi ke tanggal yuang sesuai
              * - 2 dikarenakan ada perbedaan pengindeksan tanggal antara Excel dan Carbon (Excel dimulai dari tanggal 1 Januari 1900, sedangkan Carbon dimulai dari tanggal 1 Januari 1970).
              *  */ 
-            $tglMasukKerja = Carbon::create(1900, 1, 1)->addDays($row['tgl_masuk_kerja'] - 2)->format('Y-m-d');
+
+            if (is_numeric($tglMasukKerjaFromExcel)) {
+                $tglMasukKerja = Carbon::createFromDate(1899, 12, 30)->addDays($row['tgl_masuk_kerja'])->format('Y-m-d');
+            } else {
+                $tglMasukKerja = $tglMasukKerjaFromExcel;
+            }
+        } else {
+            $tglMasukKerja = null;
         }
-        
+
         // Update or create data berdasarkan NIP
         $employee = Employee::updateOrCreate(
             ['nip' => $row['nip']],

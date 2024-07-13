@@ -57,13 +57,6 @@ class OvertimeSalaryController extends Controller
 		$info = $request->info;
 
 		try {
-			// Log activity
-			$user = Auth::user();
-			activity('Overtime Salary')
-				->event('exported')
-				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-				->log("exported overtime salary {$info}.xlsx");
-
 			return Excel::download(new OvertimeSalaryExport($info), 'Gaji ' . $info . '.xlsx');
 		} catch (\Exception $e) {
 			return back()->with('error', 'Gagal export file : ' . $e->getMessage());
@@ -298,9 +291,6 @@ class OvertimeSalaryController extends Controller
 			}
 		}
 
-		// Disable logging -> menonaktifkan log activity
-		activity()->disableLogging();
-
 		// Create Data
 		foreach ($totalDataPerNIP as $nip => $data) {
 			OvertimeSalary::updateOrCreate(
@@ -332,16 +322,6 @@ class OvertimeSalaryController extends Controller
 				]
 			);
 		}
-
-		// Enable logging -> mengaktifkan kembali log activity
-		activity()->enableLogging();
-
-		// Log activity
-		$user = Auth::user();
-		activity('Overtime Salary')
-			->event('processed')
-			->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-			->log("processed overtime salary {$keterangan}");
 
 		return redirect('/salary/overtime')->with('success', 'Berhasil memproses ' . $keterangan);
 	}

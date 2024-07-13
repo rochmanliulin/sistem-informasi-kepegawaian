@@ -25,7 +25,7 @@ class EmployeesExport implements FromCollection, WithHeadings
             'Jabatan',
             'Departemen',
             'Status',
-            'Tanggal Masuk'
+            'Tgl Masuk Kerja'
         ];
     }
 }

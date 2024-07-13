@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AllowancesImport;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\Models\Activity;
 
 class AllowanceController extends Controller
 {
@@ -57,21 +56,8 @@ class AllowanceController extends Controller
 					return back()->with('error', 'Harap unggah file dengan ekstensi .xlsx atau .xls.');
 				}
 
-				// Disable logging -> menonaktifkan log activity
-				activity()->disableLogging();
-
 				Excel::import(new AllowancesImport, $request->file('file'));
 			}
-
-			// Enable logging -> mengaktifkan kembali log activity
-			activity()->enableLogging();
-
-			// Log activity
-			$user = Auth::user();
-			activity('Allowance')
-				->event('imported')
-				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-				->log("imported allowance {$request->file('file')->getClientOriginalName()}");
 
 			return redirect('/allowance')->with('success', 'Berhasil upload');
 		} catch (\Exception $e) {

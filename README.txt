@@ -36,3 +36,9 @@ v1.0.4 - 19/06/2024
   -Bug fixing tanggal generate payroll
   -Tambah kolom created_by, updated_by, dan deleted_by pada tabel employee
   -Tambah kolom created_by dan updated_by pada tabel allowances, fingerprints, overtime_salaries, dan payrolls
+
+v2.0.0 - 12/07/2024
+  -Downgrade versi Laravel 10 -> 8
+  -Ubah kolom hasil export pegawai Tanggal Masuk -> Tgl Masuk Kerja
+  -Nonaktifkan fitur activity log
+  -Ubah tampilan menu log aktivitas

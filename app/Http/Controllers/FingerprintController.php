@@ -64,22 +64,9 @@ class FingerprintController extends Controller
 				// Hapus data
 				Fingerprint::truncate();
 
-				// Disable logging -> menonaktifkan log activity
-				activity()->disableLogging();
-
 				// Create data
 				Excel::import(new FingerprintsImport, $request->file('file'));
 			}
-
-			// Enable logging -> mengaktifkan kembali log activity
-			activity()->enableLogging();
-
-			// Log activity
-			$user = Auth::user();
-			activity('Fingerprint')
-				->event('imported')
-				->withProperties(['ip' => $request->ip(), 'attributes' => ['nama' => $user->fullname]])
-				->log("imported fingerprint {$request->file('file')->getClientOriginalName()}");
 
 			return redirect('/fingerprint')->with('success', 'Berhasil upload');
 		} catch (\Exception $e) {
