@@ -21,20 +21,16 @@ class FingerprintsImport implements ToModel, WithHeadingRow
         $userId = auth()->user()->id;
         $employee = Employee::pluck('nip')->toArray();
         $allowance = Allowance::pluck('nip')->toArray();
-
         // Apakah nilai $row['nip'] tidak ada di dalam $employee dan $allowance
         if (!in_array($row['nip'], $employee) || !in_array($row['nip'], $allowance)) {
             return null;
         }
 
-        // dd($row);
-        // dd($row['scan_pulang'], $row['scan_istirahat_1']);
         // Format ke database
         $scanIstirahat1 = null;
         if (!empty($row['scan_istirahat_1'])) {
             $scanIstirahat1 = Carbon::createFromFormat('H:i:s', $row['scan_istirahat_1']);
         }
-
         $scanIstirahat2 = null;
         if (!empty($row['scan_istirahat_2'])) {
             $scanIstirahat2 = Carbon::createFromFormat('H:i:s', $row['scan_istirahat_2']);

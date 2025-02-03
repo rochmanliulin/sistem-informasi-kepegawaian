@@ -121,7 +121,10 @@ class FingerprintController extends Controller
 					$fingerprint->scan_istirahat_1 == $validated['scan_istirahat_1'] &&
 					$fingerprint->scan_istirahat_2 == $validated['scan_istirahat_2'] &&
 					$fingerprint->istirahat == $validated['istirahat'] &&
+<<<<<<< HEAD
 					$fingerprint->scan_pulang == $validated['scan_pulang'] &&
+=======
+>>>>>>> 20f45124cc98464fb2260bf49afc988cd94820c6
 					$fingerprint->durasi == $validated['durasi'] &&
 					$fingerprint->lembur_akhir == $validated['lembur_akhir']) {
 					
