@@ -42,3 +42,6 @@ v2.0.0 - 12/07/2024
   -Ubah kolom hasil export pegawai Tanggal Masuk -> Tgl Masuk Kerja
   -Nonaktifkan fitur activity log
   -Ubah tampilan menu log aktivitas
+
+v2.0.1 - 31/12/2024
+  -Tambah auto cut kolom lembur_akhir berdasarkan scan_pulang

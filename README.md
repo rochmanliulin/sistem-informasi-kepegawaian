@@ -65,6 +65,10 @@ Sistem Informasi Kepegawaian adalah sistem yang dapat membantu perusahaan untuk 
 - Disable the activity log feature
 - Change appearance of the activity log menu
 
+### Release **v2.0.1** - 31 December 2024
+
+- Add auto cut lembur_akhir column based on return scan_pulang
+
 ## License
 
 Licensed under the [PT. Pusat Grosir Sidoarjo](https://pusatgrosirsidoarjo.com).

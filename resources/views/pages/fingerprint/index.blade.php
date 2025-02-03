@@ -65,7 +65,6 @@
               <thead>
                 <tr>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">No</th>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Jadwal</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Tanggal</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Jam Kerja</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-3">Nama</th>
@@ -73,6 +72,7 @@
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Scan Istirahat 1</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Scan Istirahat 2</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Istirahat</th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Scan Pulang</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Durasi</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Lembur Akhir</th>
                   <th></th>
@@ -83,9 +83,6 @@
                 <tr>
                   <td>
                     <p class="text-xs my-auto text-center">{{ $fingerprint->firstItem() + $loop->index }}</p>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">{{ $item->jadwal }}</p>
                   </td>
                   <td>
                     <p class="text-xs font-weight-bold mb-0 text-center">{{ $item->tgl }}</p>
@@ -110,6 +107,9 @@
                   </td>
                   <td>
                     <p class="text-xs my-auto text-center">{{ $item->istirahat }}</p>
+                  </td>
+                  <td>
+                    <p class="text-xs my-auto text-center">{{ $item->scan_pulang }}</p>
                   </td>
                   <td>
                     <p class="text-xs my-auto text-center">{{ $item->durasi }}</p>

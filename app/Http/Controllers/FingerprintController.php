@@ -30,6 +30,7 @@ class FingerprintController extends Controller
 				->orWhere('scan_istirahat_1', 'LIKE', "%$search%")
 				->orWhere('scan_istirahat_2', 'LIKE', "%$search%")
 				->orWhere('istirahat', 'LIKE', "%$search%")
+				->orWhere('scan_pulang', 'LIKE', "%$search%")
 				->orWhere('durasi', 'LIKE', "%$search%")
 				->orWhere('lembur_akhir', 'LIKE', "%$search%")
 				->paginate(10);
@@ -98,11 +99,12 @@ class FingerprintController extends Controller
 		$validated = $request->validate([
 			'jadwal' => 'required',
 			'tgl' => 'required',
-			'jam_kerja' => 'required',
+			'jam_kerja' => 'nullable',
 			'terlambat' => 'required',
 			'scan_istirahat_1' => 'nullable',
 			'scan_istirahat_2' => 'nullable',
 			'istirahat' => 'required',
+			'scan_pulang' => 'nullable',
 			'durasi' => 'required',
 			'lembur_akhir' => 'required'
 		]);
@@ -119,6 +121,7 @@ class FingerprintController extends Controller
 					$fingerprint->scan_istirahat_1 == $validated['scan_istirahat_1'] &&
 					$fingerprint->scan_istirahat_2 == $validated['scan_istirahat_2'] &&
 					$fingerprint->istirahat == $validated['istirahat'] &&
+					$fingerprint->scan_pulang == $validated['scan_pulang'] &&
 					$fingerprint->durasi == $validated['durasi'] &&
 					$fingerprint->lembur_akhir == $validated['lembur_akhir']) {
 					

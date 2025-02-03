@@ -38,10 +38,6 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            // activity('Login')
-            // ->withProperties(['ip' => $request->ip()])
-            // ->log("Time Login : " . now()->format('H:i:s'));
-
             // return redirect()->intended('dashboard');
 
             /// Redirect berdasarkan peran pengguna menggunakan gates
@@ -62,11 +58,6 @@ class LoginController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        // activity('Logout')
-        //     ->causedBy($user)
-        //     ->withProperties(['ip' => $request->ip()])
-        //     ->log("Time Logout : " . now()->format('H:i:s'));
 
         return redirect('/login');
     }

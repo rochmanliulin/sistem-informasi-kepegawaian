@@ -95,7 +95,7 @@ class OvertimeSalaryController extends Controller
 
 		// Logika 2 tapi lebih lambat dan jika file fingerprint tidak diproses akan tetapi lebih aman
 		// Query untuk mendapatkan data fingerprint berdasarkan range tanggal
-		$fingerprintQuery = Fingerprint::whereBetween('tgl', [$startDate, $endDate])->select('nip', 'jadwal', 'jam_kerja', 'terlambat', 'scan_istirahat_1', 'scan_istirahat_2', 'istirahat', 'durasi', 'lembur_akhir');
+		$fingerprintQuery = Fingerprint::whereBetween('tgl', [$startDate, $endDate])->select('nip', 'jadwal', 'jam_kerja', 'terlambat', 'scan_istirahat_1', 'scan_istirahat_2', 'istirahat', 'scan_pulang', 'durasi', 'lembur_akhir');
 		$dataFingerprint = $fingerprintQuery->get();
 
 		// Olah data  doa, uang makan, kopi, lembur, dan lembur hari minggu
@@ -108,6 +108,7 @@ class OvertimeSalaryController extends Controller
 			$scanIstirahatMasuk = $data->scan_istirahat_1;
 			$scanIstirahatKembali = $data->scan_istirahat_2;
 			$istirahat = $data->istirahat;
+			$scanPulang = $data->scan_pulang;
 			$uangLembur = 0;
 			$uangMakan = 0;
 			$uangKopi = 0;
@@ -142,8 +143,13 @@ class OvertimeSalaryController extends Controller
 			}
 
 			// Hitung uang kopi
-			if ((stripos($jamKerja, 'packing') !== false) && (preg_match('/\b[23]\b/', $jamKerja))) {
-				$uangKopi = 10000;
+			if (stripos($jamKerja, 'packing') !== false) {
+				if (preg_match('/\b2\b/', $jamKerja)) {
+					$uangKopi = 7000;
+				}
+				if (preg_match('/\b3\b/', $jamKerja)) {
+					$uangKopi = 10000;
+				}
 			}
 
 			// Hitung uang lembur hari minggu
@@ -205,7 +211,6 @@ class OvertimeSalaryController extends Controller
 		// Query untuk mendapatkan jumlah hari aktif per NIP
 		$hariAktifQuery = Fingerprint::whereBetween('tgl', [$startDate, $endDate])
 			->whereNotIn('jam_kerja', ['Libur Rutin', 'Tidak Hadir', ''])
-			// ->whereNotIn('durasi', [0])
 			->selectRaw('nip, COUNT(*) as total_hari_aktif')
 			->groupBy('nip');
 		$hariAktif = $hariAktifQuery->get();

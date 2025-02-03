@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('tgl');
             $table->string('jadwal');
-            $table->string('jam_kerja');
+            $table->string('jam_kerja')->nullable();
             $table->bigInteger('nip');
             $table->integer('terlambat')->nullable();
             $table->time('scan_istirahat_1')->nullable();
