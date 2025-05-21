@@ -27,23 +27,55 @@ class FingerprintsImport implements ToModel, WithHeadingRow
         }
 
         // Format ke database
+        $scanMasuk = null;
+        if (!empty($row['scan_masuk'])) {
+            try {
+                $scanMasuk = Carbon::createFromFormat('H:i:s', $row['scan_masuk']);
+            } catch (\Exception $e) {
+                return null; // atau log error
+            }
+        }
+
         $scanIstirahat1 = null;
         if (!empty($row['scan_istirahat_1'])) {
-            $scanIstirahat1 = Carbon::createFromFormat('H:i:s', $row['scan_istirahat_1']);
+            try {
+                $scanMasuk = Carbon::createFromFormat('H:i:s', $row['scan_masuk']);
+            } catch (\Exception $e) {
+                return null; // atau log error
+            }
         }
+
         $scanIstirahat2 = null;
         if (!empty($row['scan_istirahat_2'])) {
-            $scanIstirahat2 = Carbon::createFromFormat('H:i:s', $row['scan_istirahat_2']);
+            try {
+                $scanIstirahat2 = Carbon::createFromFormat('H:i:s', $row['scan_istirahat_2']);
+            } catch (\Exception $e) {
+                return null; // atau log error
+            }
         }
 
         $tgl = null;
         if (!empty($row['tanggal'])) {
-            $tgl = Carbon::createFromFormat('d-m-Y', $row['tanggal'])->format('Y-m-d');
+            try {
+                // Jika format berupa angka serial Excel
+                if (is_numeric($row['tanggal'])) {
+                    $tgl = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal'])->format('Y-m-d');
+                } else {
+                    $tgl = Carbon::createFromFormat('d-m-Y', $row['tanggal'])->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                \Log::error('Tanggal invalid: ' . $row['tanggal']);
+                return null;
+            }
         }
 
         $scanPulang = null;
         if (!empty($row['scan_pulang'])) {
-            $scanPulang = Carbon::createFromFormat('H:i:s', $row['scan_pulang']);
+            try {
+                $scanPulang = Carbon::createFromFormat('H:i:s', $row['scan_pulang']);
+            } catch (\Exception $e) {
+                return null; // atau log error
+            }
         }
 
         // Potong 30 menit dari lembur_akhir jika scan_pulang memenuhi kondisi
@@ -55,6 +87,7 @@ class FingerprintsImport implements ToModel, WithHeadingRow
             'tgl' => $tgl,
             'jam_kerja' => $row['jam_kerja'],
             'nip' => $row['nip'],
+            'scan_masuk' => $scanMasuk,
             'terlambat' => $row['terlambat'],
             'scan_istirahat_1' => $scanIstirahat1,
             'scan_istirahat_2' => $scanIstirahat2,
@@ -75,7 +108,6 @@ class FingerprintsImport implements ToModel, WithHeadingRow
 
     protected function potongLemburAkhir($scanPulang, $jamKerja, $lemburAkhir)
     {
-        // Jam kerja yang dikecualikan dari pemotongan waktu
         $jamKerjaDikecualikan = [
             'SENIN-KAMIS HARIAN SHIFT 2',
             'JUM’AT HARIAN SHIFT 2',
@@ -84,34 +116,28 @@ class FingerprintsImport implements ToModel, WithHeadingRow
             'NORMAL SIANG JUMAT'
         ];
 
-        // Jika jamKerja termasuk dalam yang dikecualikan, kembalikan lembur_akhir tanpa pemotongan
         if (in_array($jamKerja, $jamKerjaDikecualikan)) {
             return $lemburAkhir;
         }
 
-        // Pastikan scan_pulang tidak kosong dan formatnya valid (HH:MM:SS)
         if (empty($scanPulang) || !preg_match('/^\d{2}:\d{2}:\d{2}$/', $scanPulang)) {
             return $lemburAkhir;
         }
 
-        // Konversi scan_pulang ke timestamp
-        $timestampScanPulang = strtotime($scanPulang);
-
-        // Range waktu untuk pemotongan
-        $range1Start = strtotime('18:30:00');
-        $range1End = strtotime('23:59:59');
-        $range2Start = strtotime('04:00:00');
-        $range2End = strtotime('12:00:00');
-
-        // Jika scan_pulang antara 18:30:00 hingga 23:59:59, potong 30 menit dari lembur_akhir
-        if ($timestampScanPulang >= $range1Start && $timestampScanPulang <= $range1End) {
-            $lemburAkhir -= 30;
-        }
-        // Jika scan_pulang antara 04:00:00 hingga 12:00:00, potong 30 menit dari lembur_akhir
-        elseif ($timestampScanPulang >= $range2Start && $timestampScanPulang <= $range2End) {
-            $lemburAkhir -= 30;
+        try {
+            $scanPulangCarbon = Carbon::createFromFormat('H:i:s', $scanPulang);
+            $jamSelesaiKerja = Carbon::createFromTime(17, 0, 0); // 17:00:00
+        } catch (\Exception $e) {
+            return $lemburAkhir; // gagal parsing waktu, kembalikan nilai awal
         }
 
-        return $lemburAkhir;
+        $selisihMenit = 0;
+
+        if ($scanPulangCarbon->gt($jamSelesaiKerja)) {
+            $selisihMenit = $scanPulangCarbon->diffInMinutes($jamSelesaiKerja);
+        }
+
+        return $selisihMenit;
     }
+
 }

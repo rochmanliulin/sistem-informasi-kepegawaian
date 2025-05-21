@@ -8,15 +8,9 @@
 				<div class="card">
 					<div class="container my-4">
 						<h4 class="text-center mb-4">EDIT DATA</h4>
-						{{-- route('nama route', id) --}}
 						<form action="{{ route('fingerprint.update', $fingerprint->id) }}" method="POST">
 							@csrf
 							@method('PATCH')
-							{{--
-								Method patch/put -> method bawaan jika menggunakan route resource
-								patch -> mengupdate semua input
-								put -> mengupdate input tertentu
-							--}}
 							<div class="row">
                 <input type="hidden" name="id" value="{{ $fingerprint->id }}">
 								<div class="col-md-4">
@@ -48,6 +42,13 @@
                     @error('jam_kerja') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
                   </div>
                 </div>
+                                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="terlambat" class="form-control-label">Scan Masuk</label>
+                    <input type="number" class="form-control" id="scanMasuk" name="scan_masuk" value="{{ $fingerprint->scan_masuk }}"/>
+                    @error('scan_masuk') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
+                  </div>
+                </div>
 								<div class="col-md-3">
                   <div class="form-group">
                     <label for="terlambat" class="form-control-label">Terlambat</label>
@@ -58,40 +59,52 @@
 								<div class="col-md-3">
                   <div class="form-group">
                     <label for="scanIstirahat1" class="form-control-label">Scan Istirahat 1</label>
-                    <input type="time" class="form-control" id="scanIstirahat1" name="scan_istirahat_1" step="1" value="{{ $fingerprint->scan_istirahat_1 }}"/>
+                    <input type="time" class="form-control" id="scanIstirahat1" name="scan_istirahat_1" step="1" value="{{ $fingerprint->scan_istirahat_1 ? \Carbon\Carbon::parse($fingerprint->scan_istirahat_1)->format('H:i:s') : '' }}"/>
                     @error('scan_istirahat_1') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
                   </div>
                 </div>
 								<div class="col-md-3">
                   <div class="form-group">
                     <label for="scanIstirahat2" class="form-control-label">Scan Istirahat 2</label>
-                    <input type="time" class="form-control" id="scanIstirahat2" name="scan_istirahat_2" step="1" value="{{ $fingerprint->scan_istirahat_2 }}"/>
+                    <input type="time" class="form-control" id="scanIstirahat2" name="scan_istirahat_2" step="1" value="{{ $fingerprint->scan_istirahat_2 ? \Carbon\Carbon::parse($fingerprint->scan_istirahat_2)->format('H:i:s') : '' }}"/>
                     @error('scan_istirahat_2') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
                   </div>
                 </div>
 							</div>
               <div class="row">
-								<div class="col-md-4">
-									<div class="form-group">
-										<label for="istirahat" class="form-control-label">Istirahat</label>
-										<input type="number" class="form-control" id="istirahat" name="istirahat" value="{{ $fingerprint->istirahat }}" readonly/>
+								<div class="col-md-3">
+                  <div class="form-group">
+                    <label for="scanPulang" class="form-control-label">Scan Pulang</label>
+                    <input type="time" class="form-control" id="scanPulang" name="scan_pulang" step="1"
+                           value="{{ $fingerprint->scan_pulang ? \Carbon\Carbon::parse($fingerprint->scan_pulang)->format('H:i:s') : '' }}"
+                           placeholder="HH:MM:SS"/>
+                    @error('scan_pulang') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
+                    @if(!$fingerprint->scan_pulang)
+                      <small class="text-muted">Belum ada data scan pulang</small>
+                    @endif
+                  </div>
+                </div>
+								<div class="col-md-3">
+                  <div class="form-group">
+                    <label for="istirahat" class="form-control-label">Istirahat</label>
+                    <input type="number" class="form-control" id="istirahat" name="istirahat" value="{{ $fingerprint->istirahat }}" readonly/>
                     @error('istirahat') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
-									</div>
-								</div>
-								<div class="col-md-4">
-									<div class="form-group">
-										<label for="durasi" class="form-control-label">Durasi</label>
-										<input type="number" class="form-control" id="durasi" name="durasi" value="{{ $fingerprint->durasi }}"/>
+                  </div>
+                </div>
+								<div class="col-md-3">
+                  <div class="form-group">
+                    <label for="durasi" class="form-control-label">Durasi</label>
+                    <input type="number" class="form-control" id="durasi" name="durasi" value="{{ $fingerprint->durasi }}"/>
                     @error('durasi') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
-									</div>
-								</div>
-								<div class="col-md-4">
-									<div class="form-group">
-										<label for="lemburAkhir" class="form-control-label">Lembur Akhir</label>
-										<input type="number" class="form-control" id="lemburAkhir" name="lembur_akhir" value="{{ $fingerprint->lembur_akhir }}"/>
+                  </div>
+                </div>
+								<div class="col-md-3">
+                  <div class="form-group">
+                    <label for="lemburAkhir" class="form-control-label">Lembur Akhir</label>
+                    <input type="number" class="form-control" id="lemburAkhir" name="lembur_akhir" value="{{ $fingerprint->lembur_akhir }}"/>
                     @error('lembur_akhir') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
-									</div>
-								</div>
+                  </div>
+                </div>
 							</div>
 							<div class="row justify-content-center mt-4">
 									<button type="submit" class="btn bg-gradient-success col-1 mb-0">Update</button>

@@ -17,7 +17,7 @@ class AllowanceController extends Controller
 	public function index(Request $request)
 	{
 		$search = $request->search;
-		
+
 		// Jika user menggunakan search filter
 		if ($search) {
 			$allowance = Allowance::whereHas('employee', function ($query) use ($search) {
@@ -136,7 +136,7 @@ class AllowanceController extends Controller
 			$validated['created_by'] = $userId;
 			// Create data
 			Allowance::create($validated);
-			
+
 			return redirect('/allowance')->with('success', 'Berhasil Ditambahkan');
 		} catch (\Exception $e) {
       return back()->with('error', 'Gagal menambahkan: ' . $e->getMessage());
@@ -150,7 +150,7 @@ class AllowanceController extends Controller
 	{
 		$allowance = Allowance::where('nip', $id)->first();
 		$employee = Employee::where('nip', $id)->first();
-		
+
 		if ($employee->status === 'Pegawai Harian') {
 			// Konversi sesuai format database
 			$allowance['gaji_harian'] = $allowance['gaji'];
@@ -265,7 +265,7 @@ class AllowanceController extends Controller
 			return redirect('/allowance')->with('success', 'Berhasil Update');
 		} catch (\Exception $e) {
 			return back()->with('error', 'Gagal mengupdate : ' . $e->getMessage());
-		}	
+		}
 	}
 
 	/**
@@ -276,7 +276,7 @@ class AllowanceController extends Controller
 		try {
 			$allowance = Allowance::where('nip', $id)->first();
 			$allowance->delete();
-	
+
 			// strtolower() -> Convert ke lower case
 			// ucwords() -> Convert capital case
 			return back()->with('success', 'Tunjangan ' . ucwords(strtolower($allowance->employee->nama)) . ' telah dihapus!');

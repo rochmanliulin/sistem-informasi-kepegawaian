@@ -45,3 +45,19 @@ v2.0.0 - 12/07/2024
 
 v2.0.1 - 31/12/2024
   -Tambah auto cut kolom lembur_akhir berdasarkan scan_pulang
+
+
+
+-- KOLOM UNTUK LAPORAN GAJI BULANAN --
+  - nip, nama, gaji, kos, masuk pagi, prestasi, komunikasi, jabatan, lain lain,
+    uang makan, kasbon, prmei hadir, premi lembur, doa, total jumlah hari aktif(Kerja),
+    tanggal terbit.
+
+
+
+-- EDITING BY EJAA --
+14/04/2025
+  - Mengubah nama menu "Gaji" menjadi "Laporan Gaji"
+  - Mengubah dan menambah submenu di dalam "Laporan Gaji" menjadi "Gaji Lembur" dan "Gaji Bulanan"
+  - Membuat tampilan untuk menu "Gaji Bulanan"
+  - Mengubah logika MonthlySalaryController.php agar dapat menghitung jumlah total gaji pegawai berdasarkan data "Fingerprint"

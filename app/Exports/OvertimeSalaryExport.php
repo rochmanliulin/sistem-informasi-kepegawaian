@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Carbon\Carbon;/*  */
 
 class OvertimeSalaryExport implements FromQuery, WithHeadings
 {
@@ -28,7 +28,6 @@ class OvertimeSalaryExport implements FromQuery, WithHeadings
 
         return OvertimeSalary::query()
             ->select(
-                DB::raw('ROW_NUMBER() OVER(ORDER BY overtime_salaries.id) AS no'),
                 'overtime_salaries.nip',
                 'employees.nama',
                 'overtime_salaries.total_uang_lembur',
@@ -39,8 +38,8 @@ class OvertimeSalaryExport implements FromQuery, WithHeadings
                 'overtime_salaries.total_uang_lembur_minggu',
                 'overtime_salaries.total_uang_makan',
                 'overtime_salaries.total',
-                'overtime_salaries.keterangan',
                 'overtime_salaries.hari_aktif',
+                'overtime_salaries.keterangan',
                 'overtime_salaries.total_jam_lembur',
                 'overtime_salaries.tgl_terbit',
                 'overtime_salaries.hari_terlambat',

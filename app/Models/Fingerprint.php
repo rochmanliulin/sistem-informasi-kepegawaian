@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Fingerprint extends Model
 {
-	use HasFactory;
+use HasFactory;
 
-	protected $guarded = [
-		'id'
-	];
+protected $guarded = [
+    'id'
+];
+
+protected $casts = [];
 
 	// Relasi
 	public function employee()
@@ -37,7 +39,7 @@ class Fingerprint extends Model
 					return ((($durasiJamLembur / 60) - 2) * 15000) + 22000;
 				}
 				break;
-			
+
 			case 'Kepala Operasional':
 				if ($durasiJamLembur < 120) {
 					return ($durasiJamLembur / 60) * 15000;
@@ -47,7 +49,7 @@ class Fingerprint extends Model
 					return ($durasiJamLembur / 60) * 15000;
 				}
 				break;
-			
+
 			default:
 				return ($durasiJamLembur / 60) * 10000;
 				break;
@@ -58,7 +60,7 @@ class Fingerprint extends Model
 	{
 		$durasiJamLembur = $this->lembur_akhir;
 		$jabatan = $this->employee->jabatan;
-		
+
 		switch ($jabatan) {
 			case 'Kepala Operasional':
 				if ($durasiJamLembur >= 120 && $durasiJamLembur < 180) {
@@ -69,7 +71,7 @@ class Fingerprint extends Model
 					return 0;
 				}
 				break;
-				
+
 			default:
 				if ($durasiJamLembur >= 120 && $durasiJamLembur < 180) {
 					return 10000;
@@ -103,4 +105,9 @@ class Fingerprint extends Model
 			return null;
 		}
 	}
+
+    public function isMasukKerja()
+    {
+        return $this->jadwal !== 'Cuti pribadi' && $this->jadwal !== 'Tidak Hadir';
+    }
 }
