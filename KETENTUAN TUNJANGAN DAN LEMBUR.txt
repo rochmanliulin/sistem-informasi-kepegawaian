@@ -1,0 +1,21 @@
+======== PEGAWAI HARIAN ========
+1. Gajian setiap minggu, perhari 65k. Di bayarkan setiap hari sabtu
+2. Jika izin dalam hitungan jam maka -> 65/9 jam kerja.
+3. "PREMI HADIR" (hanya pegawai lama) :
+    - Premi Hadir Mingguan -> jika 1 minggu masuk terus dapat 50k.
+    - Premi Hadir Bulanan -> jika 1 bulan masuk terus dapat 250k.
+4. Uang Makan : jumlahnya beda-beda, kemudian dikalikan dengan "hari aktif".
+5. Uang Masuk pagi -> hanya untuk pegawai lama.
+6. Premi Hadir -> hanya untuk pegawai lama.
+
+
+======== PEGAWAI KONTRAK ========
+1. Gajian setiap bulan pada tanggal 1.
+2. Jika tidak masuk 1 hari, ada pemotongan gaji -> gaji pokok/26 = gaji perhari.
+3. Jika izin pulang lbih cepat, di hitung perjam -> gaji perhari/jam kerja = gaji perjam.
+4. Uang makan -> jumlahnya beda-beda, kemudian dikalikan dengan "hari aktif".
+5. Uang masuk pagi -> hanya untuk pegawai lama.
+6. Premi Hadir -> hanya untuk pegawai lama.
+7. "PREMI HADIR" (hanya pegawai lama) :
+    - Premi Hadir Mingguan -> jika 1 minggu masuk terus dapat 50k.
+    - Premi Hadir Bulanan -> jika 1 bulan masuk terus dapat 250k.

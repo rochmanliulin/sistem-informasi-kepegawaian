@@ -1,7 +1,7 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-  @include('layouts.navbars.auth.topnav', ['title' => 'Payroll'])
+  @include('layouts.navbars.auth.topnav', ['title' => 'Payroll Lembur'])
   <div class="container-fluid py-4">
     <div class="row mb-5">
       <div class="col-xl-12 col-sm-6 mb-xl-0">
@@ -80,7 +80,7 @@
               <input type="text" id="searchInput" class="form-control" placeholder="Cari..." name="search" value="{{ request()->search }}">
             </div>
           </form>
-          
+
           <div class="table-responsive">
 
             @if ($payroll->isEmpty())

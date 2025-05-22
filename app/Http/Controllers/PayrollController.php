@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+
 use Carbon\Carbon;
 use App\Models\Payroll;
 use Illuminate\Http\Request;
@@ -60,15 +62,15 @@ class PayrollController extends Controller
     $dateCode = date('ymd');
     $transferType = 'BCA';
     $remark = $request->remark;
-    
+
     // Memisahkan keterangan dan tgl_terbit dari $this->info
     preg_match('/^(.*)\s\((.*)\)$/', $date, $matches);
     $keterangan = $matches[1];
     $tgl_terbit = Carbon::createFromFormat('d F Y', $matches[2])->format('Y-m-d');
-    
+
     if ($codeType == 1) {
       $overtimeSalaryData = OvertimeSalary::where('keterangan', $keterangan)->whereDate('tgl_terbit', $tgl_terbit)->get();
-      
+
       foreach ($overtimeSalaryData as $data) {
         $nip = $data->nip;
         $existingPayroll = Payroll::where('nip', $nip)->where('remark', $remark)->first();
@@ -100,18 +102,106 @@ class PayrollController extends Controller
     return redirect('/payroll')->with('success', 'Berhasil memproses Payroll');
   }
 
-  public function export(Request $request)
-  {
-    $request->validate([
-      'remark' => 'required'
-    ]);
+    public function export(Request $request)
+    {
+        $request->validate([
+            'remark' => 'required'
+        ]);
 
-    $remark = $request->remark;
+        $remark = $request->remark;
 
-    try {
-      return Excel::download(new PayrollExport($remark), 'Payroll ' . $remark . '.xlsx');
-    } catch (\Exception $e) {
-      return back()->with('error', 'Gagal export file : ' . $e->getMessage());
+        try {
+            return Excel::download(new PayrollExport($remark), 'Payroll ' . $remark . '.xlsx');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal export file : ' . $e->getMessage());
+        }
     }
-  }
+
+    public function monthlyIndex()
+    {
+        return view('pages.salary.monthly', [
+            'page_title' => 'Gaji Bulanan'
+        ]);
+    }
+
+    public function monthlyProcess(Request $request)
+    {
+        $request->validate([
+            'bulan' => 'required|numeric|min:1|max:12',
+            'tahun' => 'required|numeric|min:2000',
+            'tanggal_terbit' => 'required|date',
+            'catatan' => 'nullable|string'
+        ]);
+
+        $userId = auth()->user()->id;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $tanggalTerbit = $request->tanggal_terbit;
+        $catatan = $request->catatan;
+        $transferType = 'BCA';
+
+        // Get all employees
+        $employees = Employee::all();
+
+        foreach ($employees as $employee) {
+            // Skip jika gaji pokok tidak ada
+            if (empty($employee->gaji_pokok)) {
+                continue;
+            }
+
+            $existingPayroll = Payroll::where('nip', $employee->nip)
+                ->where('bulan', $bulan)
+                ->where('tahun', $tahun)
+                ->first();
+
+            $data = [
+                'transfer_type' => $transferType,
+                'amount' => $employee->gaji_pokok,
+                'nip' => $employee->nip,
+                'remark' => 'GAJI BULANAN',
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'tanggal_terbit' => $tanggalTerbit,
+                'catatan' => $catatan,
+                'updated_by' => $userId
+            ];
+
+            if ($existingPayroll) {
+                $existingPayroll->update($data);
+            } else {
+                $id = Payroll::max('id') + 1;
+                $dateCode = date('ymd');
+                $trxID = '2' . $dateCode . str_pad($id, 3, '0', STR_PAD_LEFT);
+
+                $data['trx_id'] = $trxID;
+                $data['created_by'] = $userId;
+
+                Payroll::create($data);
+            }
+        }
+
+        return redirect('/salary/monthly')
+            ->with('success', 'Proses gaji bulanan berhasil');
+    }
+
+    public function monthlyExport(Request $request)
+    {
+        $request->validate([
+            'bulan' => 'required|numeric|min:1|max:12',
+            'tahun' => 'required|numeric|min:2000'
+        ]);
+
+        try {
+            $bulan = $request->bulan;
+            $tahun = $request->tahun;
+            $namaBulan = DateTime::createFromFormat('!m', $bulan)->format('F');
+
+            return Excel::download(
+                new MonthlySalaryExport($bulan, $tahun),
+                'Laporan_Tunjangan_'.$namaBulan.'_'.$tahun.'.xlsx'
+            );
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal export file: ' . $e->getMessage());
+        }
+    }
 }
