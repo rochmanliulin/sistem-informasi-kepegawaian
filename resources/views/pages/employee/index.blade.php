@@ -50,10 +50,60 @@
 				<div class="card">
 					<div class="d-flex justify-content-end m-3 mb-0">
             <form action="{{ route('employee.index') }}" method="GET" class="col-3">
+	@include('layouts.navbars.auth.topnav', ['title' => 'Pegawai'])
+
+	<div class="container-fluid py-4">
+		<div class="row mb-5">
+			<div class="col-xl-12 col-sm-6 mb-xl-0">
+				<div class="card">
+					<div class="card-body">
+						<h4 class="text-dark">Data Pegawai</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row pt-5 mb-3">
+			<div class="col-md-2 ms-lg-5 btn-crud">
+				<a href="{{ route('employee.create') }}"><button type="button" class="btn btn-block bg-gradient-info"><i class="fas fa-plus"></i>&nbsp;&nbsp;Tambah Data</button></a>
+			</div>
+			<div class="col-md-2">
+				<button type="button" class="btn btn-block bg-gradient-success mb-3" data-bs-toggle="modal" data-bs-target="#modal-import"><i class="fas fa-upload"></i>&nbsp;&nbsp;Import Excel</button>
+				<div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import" aria-hidden="true">
+					<div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h6 class="modal-title" id="modal-title-notification">IMPORT EXCEL</h6>
+							</div>
+							<form action="{{ route('employee.import') }}" method="post" enctype="multipart/form-data">
+								@csrf
+								<div class="modal-body">
+									<div class="py-3 text-center">
+										<input type="file" name="file" id="importExcel">
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="submit" class="btn bg-gradient-success">Import</button>
+									<button type="button" class="btn btn-link text-dark ml-auto" data-bs-dismiss="modal">Tutup</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 btn-crud" style="z-index: 1 !important">
+				<a href="{{ route('employee.export') }}"><button type="button" class="btn btn-block bg-gradient-secondary"><i class="fas fa-download"></i>&nbsp;&nbsp;Export Data</button></a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xl-12 col-sm-6 mb-xl-0">
+				<div class="card">
+					<div class="d-flex justify-content-end m-3 mb-0">
+            <form action="{{ route('employee.index') }}" method="GET" class="col-3">
               {{-- request() -> Mengambil value request yang dikirim ke server --}}
               <input type="text" id="searchInput" class="form-control" placeholder="Cari..." name="search" value="{{ request()->search }}">
             </form>
           </div>
+					<div class="table-responsive">
 					<div class="table-responsive">
 
 						@if ($employee->isEmpty())
