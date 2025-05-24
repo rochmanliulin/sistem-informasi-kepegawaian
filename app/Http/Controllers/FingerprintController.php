@@ -50,7 +50,7 @@ class FingerprintController extends Controller
         return view('pages.fingerprint.index', [
             'fingerprint' => $fingerprint,
             'search' => $search
-        ])->with('page_title', 'Data Fingerprint Lembur');
+        ])->with('page_title', 'Data Fingerprint');
     }
 
     /**

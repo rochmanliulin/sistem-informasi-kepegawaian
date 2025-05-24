@@ -28,7 +28,8 @@ class Kernel extends ConsoleKernel
     {
          // Menjadwalkan kirim slip lembur
          $schedule->command('send:overtime-slip')
-         ->weeklyOn(6,'00:00') // Setiap hari sabtu jam 00:00
+         //->weeklyOn(6,'00:00') // Setiap hari sabtu jam 00:00
+         ->everyMinute()
          ->timezone('Asia/Jakarta');
     }
 
