@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\Employee;
+use App\Models\OvertimeSalary;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\SendOvertimeSalarySlip::class,
     ];
 
     /**
@@ -24,7 +26,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+         // Menjadwalkan kirim slip lembur
+         $schedule->command('send:overtime-slip')
+         //->weeklyOn(6,'00:00') // Setiap hari sabtu jam 00:00
+         ->everyMinute()
+         ->timezone('Asia/Jakarta');
     }
 
     /**

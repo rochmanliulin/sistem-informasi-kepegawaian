@@ -3,11 +3,51 @@
 @section('content')
   @include('layouts.navbars.auth.topnav', ['title' => 'Fingerprint'])
   <div class="container-fluid py-4">
+
+     {{-- ALERT ERROR UNTUK DATA YANG TIDAK SCAN PULANG --}}
+    @if(session('error_data'))
+        <div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+            <strong>Import Gagal!</strong> Pegawai berikut tidak melakukan scan pulang:
+
+            {{-- Tombol Close --}}
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="alert" aria-label="Close"></button>
+
+            {{-- Tabel --}}
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered table-sm bg-white text-dark">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>NIP</th>
+                            <th>Nama</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(session('error_data') as $index => $err)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $err['nip'] }}</td>
+                                <td>{{ $err['nama'] }}</td>
+                                <td>{{ $err['tanggal'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+    {{-- ALERT BIASA --}}
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
     <div class="row mb-5">
         <div class="col-xl-12 col-sm-6 mb-xl-0">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="text-dark">{{ $page_title }}</h4>
+                    <h4 class="text-dark">{{$page_title}}</h4>
                 </div>
             </div>
         </div>
@@ -44,8 +84,8 @@
           <button type="submit" class="btn btn-block bg-gradient-secondary">Proses History</button>
         </form>
       </div> --}}
-      {{-- <div class="col-md-3 me-5" style="z-index: 1 !important">
-			</div> --}}
+
+
     </div>
     <div class="row">
       <div class="col-xl-12 col-sm-6 mb-xl-0">
@@ -59,8 +99,8 @@
           <div class="table-responsive">
 
             @if ($fingerprint->isEmpty())
-							<p class="d-flex justify-content-center mt-3 mb-1 fw-bold">Tidak ada data yang ditemukan.</p>
-						@else
+              <p class="d-flex justify-content-center mt-3 mb-1 fw-bold">Tidak ada data yang ditemukan.</p>
+            @else
             <table class="table align-items-center mb-0">
               <thead>
                 <tr>
@@ -68,6 +108,7 @@
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Tanggal</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Jam Kerja</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-3">Nama</th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Scan Masuk</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Terlambat</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Scan Istirahat 1</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Scan Istirahat 2</th>
@@ -95,6 +136,9 @@
                       <i class="bg-info"></i>
                       <span class="text-dark text-xs">{{ $item->employee->nama }}</span>
                     </span>
+                  </td>
+                  <td>
+                    <p class="text-xs my-auto text-center">{{ $item->scan_masuk }}</p>
                   </td>
                   <td>
                     <p class="text-xs my-auto text-center">{{ $item->terlambat }}</p>
@@ -129,7 +173,7 @@
             </table>
             @endif
           </div>
-          
+
           <div class="px-5 mt-3">
             {{ $fingerprint->onEachSide(1)->appends(['search' => $search])->links() }}
           </div>
@@ -141,15 +185,15 @@
 @endsection
 
 @push('js')
-	<script>
-		// Fungsi untuk menangani tombol Enter pada input pencarian
-		document.addEventListener("DOMContentLoaded", function() {
-			const searchInput = document.querySelector('#searchInput');
+  <script>
+    // Fungsi untuk menangani tombol Enter pada input pencarian
+    document.addEventListener("DOMContentLoaded", function() {
+      const searchInput = document.querySelector('#searchInput');
 
-			searchInput.addEventListener('keypress', function(e) {
-				if (e.key === 'Enter') {
-					// Mencegah event bawaan browser
-					e.preventDefault();
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          // Mencegah event bawaan browser
+          e.preventDefault();
 
           if (this.value.trim() === '') {
             window.location.href = "{{ route('fingerprint.index') }}";
@@ -157,8 +201,8 @@
             // Ambil form dari input, kemudian submit
             this.form.submit();
           }
-				}
-			});
-		});
-	</script>
+        }
+      });
+    });
+  </script>
 @endpush

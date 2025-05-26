@@ -87,18 +87,18 @@
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-hand-holding-usd text-dark text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Gaji</span>
+                        <span class="nav-link-text ms-1">Laporan Gaji</span>
                     </a>
                     <ul class="navbar-nav collapse {{ request()->is('salary*') ? 'show' : '' }}" id="subMenuSalary">
                         <!-- Submenu items go here -->
                         <li class="nav-item">
                             <a class="nav-link {{ Route::currentRouteName() == 'overtime-salary.index' ? 'active' : '' }}" href="{{ route('overtime-salary.index') }}">
-                                <span class="nav-link-text ms-2">Lembur</span>
+                                <span class="nav-link-text ms-2">Gaji Lembur</span>
                             </a>
                         </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link {{ Route::currentRouteName() == 'overtime-salary' ? 'active' : '' }}" href="{{ route('overtime-salary') }}">
-                                <span class="nav-link-text ms-2">Bulanan</span>
+                                <span class="nav-link-text ms-2">Gaji Bulanan</span>
                             </a>
                         </li> --}}
                         <!-- Add more submenu items as needed -->
@@ -114,7 +114,7 @@
                     </a>
                 </li>
             @endcan
-            
+
             @can('isAdmin')
             <li class="nav-item mt-5">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">User</h6>
