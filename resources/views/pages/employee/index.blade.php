@@ -77,7 +77,7 @@
 									@foreach ($employee as $item)
 										<tr>
 											<td>
-													{{-- 
+													{{--
 														firstItem() -> Mendapatkan nomor urut pertama dari data
 														$loop()->index -> Nomor urut dari iterasi
 													--}}
@@ -132,7 +132,7 @@
 
 					</div>
 					<div class=" px-5 mt-3">
-						{{-- 
+						{{--
 							onEachSide() -> Menampilkan 1 angka disisi kanan dan kiri button page saat ini
 							links() -> Navigasi pagination
 						--}}

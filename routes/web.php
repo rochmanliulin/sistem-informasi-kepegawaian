@@ -26,11 +26,21 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FingerprintController;
 use App\Http\Controllers\AllowanceController;
 use App\Http\Controllers\OvertimeSalaryController;
+use App\Http\Controllers\MonthlySalaryController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\UsersManagementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TutorialController;
+
+// ini tambahan baru
+use Illuminate\Support\Facades\Mail;
+use App\Models\Employee;
+use App\Models\OvertimeSalary;
+use App\Models\MonthlySalary;
+use App\Mail\OvertimeSalaryMail;
+use App\Mail\MonthlySalaryMail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 // Jika belum terautentikasi
 Route::group(['middleware' => 'guest'], function () {
@@ -73,6 +83,9 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
 		Route::post('/payroll/process', [PayrollController::class, 'process'])->name('payroll.process');
 		Route::get('/payroll-export', [PayrollController::class, 'export'])->name('payroll.export');
+        Route::get('/salary/monthly', [MonthlySalaryController::class, 'index'])->name('monthly-salary.index');
+		Route::post('/salary/monthly/process', [MonthlySalaryController::class, 'process'])->name('monthly-salary.process');
+		Route::get('/monthly-salary/export', [MonthlySalaryController::class, 'export'])->name('monthly-salary.export');
 	});
 
 	Route::group(['middleware' => 'can:isEditor'], function() {
