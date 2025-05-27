@@ -6,6 +6,9 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Employee;
 use App\Models\OvertimeSalary;
+use App\Models\MonthlySalary;
+use App\Notifications\OvertimeSalarySlip;
+use App\Notifications\MonthlySalarySlip;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +19,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\SendOvertimeSalarySlip::class,
+        \App\Console\Commands\SendMonthlySalarySlip::class,
     ];
 
     /**
@@ -29,6 +33,10 @@ class Kernel extends ConsoleKernel
          // Menjadwalkan kirim slip lembur
          $schedule->command('send:overtime-slip')
          ->weeklyOn(6,'00:00') // Setiap hari sabtu jam 00:00
+         ->timezone('Asia/Jakarta');
+
+         $schedule->command('send:monthly-slip')
+         ->monthlyOn(1,'00:00') // Setiap tanggal 1 jam 00:00
          ->timezone('Asia/Jakarta');
     }
 

@@ -4,27 +4,26 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Employee;
-use App\Models\OvertimeSalary;
-use App\Notifications\OvertimeSalarySlip;
+use App\Models\MonthlySalary;
+use App\Notifications\MonthlySalarySlip;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
-
-class SendOvertimeSalarySlip extends Command
+class SendMonthlySalarySlip extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'send:overtime-slip';
+    protected $signature = 'send:monthly-slip';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Kirim slip gaji lembur ke pegawai yang punya email';
+    protected $description = 'Kirim slip gaji bulanan ke pegawai yang punya email';
 
     /**
      * Create a new command instance.
@@ -47,9 +46,9 @@ class SendOvertimeSalarySlip extends Command
             $employees = Employee::whereNotNull('email')->get();
 
             foreach ($employees as $employee) {
-                $slip = OvertimeSalary::where('nip', $employee->nip)->latest()->first();
+                $slip = MonthlySalary::where('nip', $employee->nip)->latest()->first();
                 if ($slip) {
-                    $employee->notify(new OvertimeSalarySlip($slip));
+                    $employee->notify(new MonthlySalarySlip($slip));
                 }
             }
             $this->info('Pengiriman selesai.');
@@ -57,4 +56,5 @@ class SendOvertimeSalarySlip extends Command
             Log::error('Gagal mengirim slip gaji lembur: ' . $e->getMessage());
         }
     }
+
 }

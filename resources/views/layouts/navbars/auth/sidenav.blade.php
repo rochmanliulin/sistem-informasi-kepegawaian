@@ -96,11 +96,11 @@
                                 <span class="nav-link-text ms-2">Gaji Lembur</span>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ Route::currentRouteName() == 'overtime-salary' ? 'active' : '' }}" href="{{ route('overtime-salary') }}">
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::currentRouteName() == 'monthly-salary.index' ? 'active' : '' }}" href="{{ route('monthly-salary.index') }}">
                                 <span class="nav-link-text ms-2">Gaji Bulanan</span>
                             </a>
-                        </li> --}}
+                        </li>
                         <!-- Add more submenu items as needed -->
                     </ul>
                 </li>

@@ -34,8 +34,9 @@ class EmployeeController extends Controller
 
     return view('pages.employee.index', [
       'employee' => $employees,
-      'search' => $search
-    ]);
+      'search' => $search,
+      $page_title = 'Data Pegawai'
+    ], compact('employees', 'page_title'));
   }
 
   /**

@@ -51,7 +51,7 @@ class OvertimeSalarySlip extends Notification implements ShouldQueue
 
         // Membuat nama file PDF dengan timestamp
         $timestamp = now()->format('Ymd_His');
-        $pdfPath = "slips/lembur_{$notifiable->nip}_{$timestamp}.pdf";
+        $pdfPath = "slips/ovetime/lembur_{$notifiable->nip}_{$timestamp}.pdf";
 
         // Menyimpan PDF ke storage
         Storage::put($pdfPath, $pdf->output());

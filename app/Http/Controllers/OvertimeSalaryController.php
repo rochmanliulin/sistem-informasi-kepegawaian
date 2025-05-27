@@ -359,6 +359,7 @@ class OvertimeSalaryController extends Controller
             $premiHadir  = $data->premi_hadir;
             $premiLembur = $data->premi_lembur;
             $gaji = $data->gaji;
+            $status = $data->status;
 
             if (isset($totalDataPerNIP[$nip])) {
                 // Update data doa

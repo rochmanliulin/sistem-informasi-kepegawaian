@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;/*  */
+use Carbon\Carbon;
 
 class OvertimeSalaryExport implements FromQuery, WithHeadings
 {
