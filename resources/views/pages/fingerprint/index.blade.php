@@ -3,6 +3,46 @@
 @section('content')
   @include('layouts.navbars.auth.topnav', ['title' => 'Fingerprint'])
   <div class="container-fluid py-4">
+
+    {{-- ALERT ERROR UNTUK DATA YANG TIDAK SCAN PULANG --}}
+    @if(session('error_data'))
+        <div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+            <strong>Import Gagal!</strong> Pegawai berikut tidak melakukan scan pulang:
+
+            <button type="button"
+                    class="position-absolute top-0 end-0 mt-2 me-2 btn text-white border-0 fs-4"
+                    data-bs-dismiss="alert"
+                    aria-label="Close">
+                &times;
+            </button>
+
+
+            {{-- Tabel --}}
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered table-sm bg-white text-dark">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>NIP</th>
+                            <th>Nama</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(session('error_data') as $index => $err)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $err['nip'] }}</td>
+                                <td>{{ $err['nama'] }}</td>
+                                <td>{{ $err['tanggal'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
     <div class="row mb-5">
         <div class="col-xl-12 col-sm-6 mb-xl-0">
             <div class="card">
@@ -129,7 +169,7 @@
             </table>
             @endif
           </div>
-          
+
           <div class="px-5 mt-3">
             {{ $fingerprint->onEachSide(1)->appends(['search' => $search])->links() }}
           </div>

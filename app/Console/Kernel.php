@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\SendOvertimeSalarySlip::class,
+        // Tambahkan perintah lain di sini jika diperlukan
     ];
 
     /**
@@ -24,7 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Kirim Slip Lembur Setiap Hari Sabtu pukul 00:00 WIB
+        $schedule->command('send:overtime-sLip')
+                 ->weeklyOn(6,'11:24') // Atur waktu sesuai kebutuhan
+                 ->timezone('Asia/Jakarta');
     }
 
     /**

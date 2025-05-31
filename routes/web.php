@@ -32,6 +32,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TutorialController;
 
+// ini tambahan baru
+use Illuminate\Support\Facades\Mail;
+use App\Models\Employee;
+use App\Models\OvertimeSalary;
+use App\Mail\OvertimeSalaryMail;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 // Jika belum terautentikasi
 Route::group(['middleware' => 'guest'], function () {
 	Route::get('/register', [RegisterController::class, 'create'])->name('register');

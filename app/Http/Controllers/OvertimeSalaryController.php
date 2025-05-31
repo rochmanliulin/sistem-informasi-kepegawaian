@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
+// bagian ini baru ditambahkan
+use App\Models\Employee;
+use App\Mail\OvertimeSalaryMail;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+use App\Notifications\OvertimeSalaryNotification;
+use Illuminate\Support\Facades\Log;
+
 class OvertimeSalaryController extends Controller
 {
 	/**
@@ -63,6 +72,23 @@ class OvertimeSalaryController extends Controller
 		}
 	}
 
+    // Kirim slip lembur ke karyawan secara otomatis
+    public function sendSlip($nip)
+    {
+        // Ambil data lembur berdasarkan nip
+        $data = OvertimeSalary::with('employee')
+            ->where('nip', $nip)
+            ->latest('tgl_terbit')
+            ->firstOrFail();
+
+        // Kirim email slip lembur ke karyawan via Notification
+        if ($data->employee && $data->employee->email) {
+            $data->employee->notify(new OvertimeSalarySlip($data));
+        }
+
+        return back()->with('success', 'Slip lembur berhasil dikirim ke email karyawan!');
+    }
+
 	/**
 	 * Process hasil inputan berdasarkan tanggal
 	 */
@@ -80,9 +106,17 @@ class OvertimeSalaryController extends Controller
 		$dates = explode(' to ', $request->range_tgl);
 		$startDate = $dates[0];
 		$endDate = $dates[1];
+        $start = Carbon::parse($startDate); // Parse tanggal mulai
+        $end = Carbon::parse($endDate); // Parse tanggal akhir
 
-		// Field Keterangan
-		$keterangan = 'Slip Lembur ' . date('j', strtotime($startDate)) . '-' . date('j F Y', strtotime($endDate));
+		// Format tanggal untuk keterangan
+		if (date('F', strtotime($startDate)) === date('F', strtotime($endDate))) {
+            // Jika bulan sama, hanya tampilkan bulan sekali di endDate
+            $keterangan = 'Slip Lembur ' . date('j', strtotime($startDate)) . ' - ' . date('j F Y', strtotime($endDate));
+        } else {
+            // Jika bulan berbeda, tampilkan kedua bulan
+            $keterangan = 'Slip Lembur ' . date('j F', strtotime($startDate)) . ' - ' . date('j F Y', strtotime($endDate));
+        }
 
 		// Jumlah hari kerja
 		$jumlahHariKerja = (int) $request->jumlah_hari_kerja;
@@ -119,13 +153,15 @@ class OvertimeSalaryController extends Controller
 				$totalDataPerNIP[$nip] = [
 					'total_uang_lembur' => 0,
 					'doa' => 0,
-					'premi' => 0,
+					'premi_hadir' => 0,
+                    'premi_lembur' => 0,
 					'gaji' => 0,
 					'total_uang_kopi' => 0,
 					'total_uang_lembur_minggu' => 0,
 					'total_uang_makan' => 0,
 					'total' => 0,
 					'hari_aktif' => 0,
+                    'hari_kerja' => $jumlahHariKerja,
 					'total_jam_lembur' => 0,
 					'hari_terlambat' => 0,
 					'total_terlambat' => 0,
@@ -253,19 +289,20 @@ class OvertimeSalaryController extends Controller
 				}
 
 				if ($durasiLembur !== 0) {
-					$totalDataPerNIP[$nip]['total_jam_lembur'] += $durasiLembur / 60;
+					$totalDataPerNIP[$nip]['total_jam_lembur'] += $durasiLembur;
 				}
 			}
 		}
 
 		$premi = Allowance::all();
-
+        // Olah data premi hadir, lembur, dan gaji
 		foreach ($premi as $data) {
 			$nip = $data->nip;
 			$doa = $data->doa;
 			$premiHadir  = $data->premi_hadir;
 			$premiLembur = $data->premi_lembur;
 			$gaji = $data->gaji;
+            $status = $data->status;
 
 			if (isset($totalDataPerNIP[$nip])) {
 				// Update data doa
@@ -273,38 +310,51 @@ class OvertimeSalaryController extends Controller
 					$totalDataPerNIP[$nip]['doa'] = $doa;
 				}
 
-				// Update data gaji
-				if (!is_null($gaji)) {
-					$totalDataPerNIP[$nip]['gaji'] = $gaji * $totalDataPerNIP[$nip]['hari_aktif'];
-				}
+				// Update data uang lembur
+                if (!is_null($gaji)) {
+                    if ($status === 'Pegawai Harian') {
+                        $totalDataPerNIP[$nip]['gaji'] = $gaji * $totalDataPerNIP[$nip]['hari_aktif']; // Untuk Pegawai Harian
+                    } else {
+                        $totalDataPerNIP[$nip]['gaji'] = $gaji; // Untuk Pegawai Tetap
+                    }
+                }
 
 				if ($totalDataPerNIP[$nip]['hari_aktif'] === $jumlahHariKerja) {
 					// Premi hadir
 					if (!is_null($premiHadir)) {
-						$totalDataPerNIP[$nip]['premi'] = $premiHadir;
+						$totalDataPerNIP[$nip]['premi_hadir'] = $premiHadir;
 					}
 
 					// Premi lembur
 					if ($totalDataPerNIP[$nip]['syarat_premi_lembur'] === $jumlahHariKerja && !is_null($premiLembur)) {
-						$totalDataPerNIP[$nip]['premi'] = $premiLembur;
+						$totalDataPerNIP[$nip]['premi_lembur'] = $premiLembur;
 					}
 				}
 
 				// Hitung total
-				$totalDataPerNIP[$nip]['total'] = $totalDataPerNIP[$nip]['total_uang_lembur'] + $totalDataPerNIP[$nip]['doa'] +
-					$totalDataPerNIP[$nip]['premi'] + $totalDataPerNIP[$nip]['gaji'] + $totalDataPerNIP[$nip]['total_uang_kopi'] + $totalDataPerNIP[$nip]['total_uang_lembur_minggu'] + $totalDataPerNIP[$nip]['total_uang_makan'];
+                $totalDataPerNIP[$nip]['total'] = $totalDataPerNIP[$nip]['total_uang_lembur'] + $totalDataPerNIP[$nip]['doa'] +
+                $totalDataPerNIP[$nip]['premi_hadir'] + $totalDataPerNIP[$nip]['premi_lembur'] + $totalDataPerNIP[$nip]['gaji'] + $totalDataPerNIP[$nip]['total_uang_kopi'] +
+                $totalDataPerNIP[$nip]['total_uang_lembur_minggu'] + $totalDataPerNIP[$nip]['total_uang_makan'];
 			}
 		}
 
 		// Create Data
 		foreach ($totalDataPerNIP as $nip => $data) {
+            $jam = floor($data['total_jam_lembur']); // Hitung jam lembur
+            $menit = round(($data['total_jam_lembur'] - $jam) * 60); // Hitung menit lembur
+            $durasiLemburFormatted = "{$jam} jam {$menit} menit"; // Format durasi lembur
+
+            // format durasi lembur
+            $data['durasi_lembur_formatted'] = $durasiLemburFormatted;
+
 			OvertimeSalary::updateOrCreate(
 				['nip' => $nip, 'keterangan' => $keterangan, 'tgl_terbit' => $tglTerbit],
 				[
 					'nip' => $nip,
 					'total_uang_lembur' => (int) $data['total_uang_lembur'],
 					'doa' => $data['doa'],
-					'premi' => $data['premi'],
+					'premi_hadir' => $data['premi_hadir'],
+                    'premi_lembur' => $data['premi_lembur'],
 					'gaji' => $data['gaji'],
 					'total_uang_kopi' => $data['total_uang_kopi'],
 					'total_uang_lembur_minggu' => $data['total_uang_lembur_minggu'],
@@ -312,6 +362,7 @@ class OvertimeSalaryController extends Controller
 					'total' => (int) $data['total'],
 					'keterangan' => $keterangan,
 					'hari_aktif' => $data['hari_aktif'],
+                    'hari_kerja' => $jumlahHariKerja,
 					'total_jam_lembur' => $data['total_jam_lembur'],
 					'tgl_terbit' => $tglTerbit,
 					'hari_terlambat' => $data['hari_terlambat'],

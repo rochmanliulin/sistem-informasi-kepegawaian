@@ -27,6 +27,15 @@ class FingerprintsImport implements ToModel, WithHeadingRow
         }
 
         // Format ke database
+        $scanMasuk = null;
+        if (!empty($row['scan_masuk'])) {
+            try {
+                $scanMasuk = Carbon::createFromFormat('H:i:s', $row['scan_masuk']);
+            } catch (\Exception $e) {
+                return null; // atau log error
+            }
+        }
+
         $scanIstirahat1 = null;
         if (!empty($row['scan_istirahat_1'])) {
             $scanIstirahat1 = Carbon::createFromFormat('H:i:s', $row['scan_istirahat_1']);
@@ -37,9 +46,17 @@ class FingerprintsImport implements ToModel, WithHeadingRow
         }
 
         $tgl = null;
-        if (!empty($row['tanggal'])) {
-            $tgl = Carbon::createFromFormat('d-m-Y', $row['tanggal'])->format('Y-m-d');
-        }
+        try {
+            // Jika format berupa angka serial Excel
+            if (is_numeric($row['tanggal'])) {
+                $tgl = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal'])->format('Y-m-d'); // Mengonversi ke format Y-m-d
+            } else {
+                $tgl = Carbon::createFromFormat('d-m-Y', $row['tanggal'])->format('Y-m-d'); // Mengonversi ke format Y-m-d
+            }
+            } catch (\Exception $e) {
+                \Log::error('Tanggal invalid: ' . $row['tanggal']); // jika format tanggal tidak valid
+                return null;
+            }
 
         $scanPulang = null;
         if (!empty($row['scan_pulang'])) {
@@ -55,6 +72,7 @@ class FingerprintsImport implements ToModel, WithHeadingRow
             'tgl' => $tgl,
             'jam_kerja' => $row['jam_kerja'],
             'nip' => $row['nip'],
+            'scan_masuk' => $scanMasuk,
             'terlambat' => $row['terlambat'],
             'scan_istirahat_1' => $scanIstirahat1,
             'scan_istirahat_2' => $scanIstirahat2,
