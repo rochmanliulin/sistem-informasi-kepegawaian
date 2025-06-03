@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             'fullname' => 'Administrator',
             'role' => 'admin',
             'email' => 'admin@pusatgrosirsidoarjo.com',
-            'password' => bcrypt('onlyforAdmin101083%')
+            //'password' => bcrypt('onlyforAdmin101083%')
+            'password' => bcrypt('123456')
         ]);
     }
 }

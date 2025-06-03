@@ -11,6 +11,11 @@ use App\Imports\FingerprintsImport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+// import yang baru ditambahkan
+use PHPoffice\PhpSpreadsheet\IOFactory; // untuk membaca file excel
+use Illuminate\Support\Facades\DB; // untuk query database
+use Carbon\Carbon; // untuk manipulasi tanggal dan waktu
+
 class FingerprintController extends Controller
 {
 	/**
@@ -26,6 +31,7 @@ class FingerprintController extends Controller
 			})->orWhere('jadwal', 'LIKE', "%$search%")
 				->orWhere('tgl', 'LIKE', "%$search%")
 				->orWhere('jam_kerja', 'LIKE', "%$search%")
+                ->orWhere('scan_masuk', 'LIKE', "%$search%")
 				->orWhere('terlambat', 'LIKE', "%$search%")
 				->orWhere('scan_istirahat_1', 'LIKE', "%$search%")
 				->orWhere('scan_istirahat_2', 'LIKE', "%$search%")
@@ -41,7 +47,7 @@ class FingerprintController extends Controller
 		return view('pages.fingerprint.index', [
 			'fingerprint' => $fingerprint,
 			'search' => $search
-		])->with('page_title', 'Data Fingerprint Lembur');
+		])->with('page_title', 'Data Fingerprint');
 	}
 
 	/**
@@ -56,11 +62,50 @@ class FingerprintController extends Controller
 		try {
 			if ($request->hasFile('file')) {
 				// Cek extention
+                $file = $request->file('file');
 				$fileExtension = $request->file('file')->getClientOriginalExtension();
 
 				if (!in_array($fileExtension, ['xlsx', 'xls'])) {
 					return back()->with('error', 'Harap unggah file dengan ekstensi .xlsx atau .xls.');
 				}
+
+                // Pengecekan data tidak scan pulang
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
+                $sheet = $spreadsheet->getActiveSheet();
+                $rows = $sheet->toArray();
+
+                $errorList = [];
+
+                foreach ($rows as $index => $row) {
+                    if ($index <2) continue; // skip header
+
+                    $nip = $row[5] ?? null; // Asumsi kolom ke-6 adalah NIP
+                    $tgl = $row[0] ?? null; // Asumsi kolom ke-1 adalah tanggal
+                    $jadwal = $row[1] ?? null; // Asumsi kolom ke-2 adalah jadwal
+                    $scanPulang = $row[24] ?? null; // Asumsi kolom ke-25 adalah scan pulang
+
+                    // Abaikan pengecekan jika jadwal adalah Cuti Pribadi atau Tidak Hadir
+                    // Tambahkan kondisi lagi jika ada update jadwal libur dikemudian hari
+                    if (in_array(strtolower($jadwal), ['cuti pribadi', 'tidak hadir'])) {
+                        continue;
+                    }
+
+                    if (empty($scanPulang)) {
+                        $pegawai = DB::table('employees')->where('nip', $nip)->first();
+                        $errorList[] = [
+                            'nip' => $nip,
+                            'nama' => $pegawai->nama ?? 'Tidak ditemukan',
+                            'tanggal' => $tgl,
+                        ];
+                    }
+                }
+
+                // Jika ada pegawai yang tidak scan pulang, tampilkan pesan error dan batalkan import
+                if (!empty($errorList)) {
+                    return back()
+                        ->with('error_data', $errorList)
+                        ->with('error', 'Import gagal karena ada pegawai yang tidak scan pulang.');
+                }
 
 				// Hapus data
 				Fingerprint::truncate();
@@ -71,7 +116,8 @@ class FingerprintController extends Controller
 
 			return redirect('/fingerprint')->with('success', 'Berhasil upload');
 		} catch (\Exception $e) {
-			return back()->with('error', 'Format isi file tidak sesuai');
+            // Jika terjadi kesalahan, tampilkan pesan error dan batalkan import
+			return back()->with('error', 'Gagal import : ' . $e->getMessage());
 		}
 	}
 
@@ -100,11 +146,12 @@ class FingerprintController extends Controller
 			'jadwal' => 'required',
 			'tgl' => 'required',
 			'jam_kerja' => 'nullable',
+            'scan_masuk' => 'nullable|date_format:H:i:s', // Boleh kosong, tetapi jika diisi harus dalam format jam:menit:detik (contoh: 14:30:00)
 			'terlambat' => 'required',
-			'scan_istirahat_1' => 'nullable',
-			'scan_istirahat_2' => 'nullable',
+			'scan_istirahat_1' => 'nullable|date_format:H:i:s', // Boleh kosong, tetapi jika diisi harus dalam format jam:menit:detik (contoh: 14:30:00)
+			'scan_istirahat_2' => 'nullable|date_format:H:i:s', // Boleh kosong, tetapi jika diisi harus dalam format jam:menit:detik (contoh: 14:30:00)
 			'istirahat' => 'required',
-			'scan_pulang' => 'nullable',
+			'scan_pulang' => 'nullable|date_format:H:i:s', // Boleh kosong, tetapi jika diisi harus dalam format jam:menit:detik (contoh: 14:30:00)
 			'durasi' => 'required',
 			'lembur_akhir' => 'required'
 		]);
@@ -117,17 +164,15 @@ class FingerprintController extends Controller
 			if ($fingerprint->jadwal == $validated['jadwal'] &&
 					$fingerprint->tgl == $validated['tgl'] &&
 					$fingerprint->jam_kerja == $validated['jam_kerja'] &&
+                    $fingerprint->scan_masuk == $validated['scan_masuk'] &&
 					$fingerprint->terlambat == $validated['terlambat'] &&
 					$fingerprint->scan_istirahat_1 == $validated['scan_istirahat_1'] &&
 					$fingerprint->scan_istirahat_2 == $validated['scan_istirahat_2'] &&
 					$fingerprint->istirahat == $validated['istirahat'] &&
-<<<<<<< HEAD
 					$fingerprint->scan_pulang == $validated['scan_pulang'] &&
-=======
->>>>>>> 20f45124cc98464fb2260bf49afc988cd94820c6
 					$fingerprint->durasi == $validated['durasi'] &&
 					$fingerprint->lembur_akhir == $validated['lembur_akhir']) {
-					
+
 				return redirect('/fingerprint')->with('error', 'Tidak Ada Perubahan');
 			}
 
