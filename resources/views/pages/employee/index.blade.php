@@ -70,6 +70,7 @@
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Departemen</th>
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Status</th>
 										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Tanggal Masuk Kerja</th>
+										<th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Email</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -77,7 +78,7 @@
 									@foreach ($employee as $item)
 										<tr>
 											<td>
-													{{-- 
+													{{--
 														firstItem() -> Mendapatkan nomor urut pertama dari data
 														$loop()->index -> Nomor urut dari iterasi
 													--}}
@@ -107,6 +108,8 @@
 											<td>
 												<p class="text-xs my-auto text-center">{{ $item->tgl_masuk_kerja }}</p>
 											</td>
+                                            <td>
+                                                <p class="text-xs my-auto text-center">{{ $item->email }}</p>
 											<td class="align-middle text-center">
 												{{-- route('nama route', id) --}}
 												<a href="{{ route('employee.edit', $item->nip) }}" class="text-success font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
@@ -132,7 +135,7 @@
 
 					</div>
 					<div class=" px-5 mt-3">
-						{{-- 
+						{{--
 							onEachSide() -> Menampilkan 1 angka disisi kanan dan kiri button page saat ini
 							links() -> Navigasi pagination
 						--}}
