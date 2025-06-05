@@ -35,13 +35,15 @@
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-3">Nama</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Lembur</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Do'a</th>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Premi</th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Premi Hadir</th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Premi Lembur</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Gaji</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Kopi</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Lembur Minggu</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Uang Makan</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Total</th>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Hari</th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Hari Kerja</th>
+                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Hari Aktif</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Jam</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Tanggal Terbit</th>
                   <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 text-center">Telat</th>
@@ -78,7 +80,10 @@
                     <p class="text-xs my-auto text-center">{{ $item->doa }}</p>
                   </td>
                   <td>
-                    <p class="text-xs my-auto text-center">{{ $item->premi }}</p>
+                    <p class="text-xs my-auto text-center">{{ $item->premi_hadir }}</p>
+                  </td>
+                  <td>
+                    <p class="text-xs my-auto text-center">{{ $item->premi_lembur }}</p>
                   </td>
                   <td>
                     <p class="text-xs my-auto text-center">{{ $item->gaji }}</p>

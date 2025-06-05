@@ -103,7 +103,8 @@ class EmployeeController extends Controller
       'jabatan' => 'nullable',
       'departemen' => 'nullable',
       'tgl_masuk_kerja' => 'nullable|date',
-      'status' => 'required'
+      'status' => 'required',
+      'email' => 'required'
     ]);
 
     try {
@@ -142,7 +143,8 @@ class EmployeeController extends Controller
       'jabatan' => 'nullable',
       'departemen' => 'nullable',
       'tgl_masuk_kerja' => 'nullable',
-      'status' => 'required'
+      'status' => 'required',
+      'email' => 'required'
     ]);
 
     try {
@@ -156,7 +158,8 @@ class EmployeeController extends Controller
         $employee->jabatan == $validated['jabatan'] &&
         $employee->departemen == $validated['departemen'] &&
         $employee->tgl_masuk_kerja == $validated['tgl_masuk_kerja'] &&
-        $employee->status == $validated['status']
+        $employee->status == $validated['status'] &&
+        $employee->email == $validated['email']
       ) {
 
         return redirect('/employee')->with('error', 'Tidak Ada Perubahan');

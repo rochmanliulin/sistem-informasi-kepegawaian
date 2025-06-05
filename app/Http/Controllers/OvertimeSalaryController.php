@@ -294,7 +294,7 @@ class OvertimeSalaryController extends Controller
 			}
 		}
 
-		$premi = Allowance::all();
+		$premi = Allowance::with(['employee:nip,status'])->get();
         // Olah data premi hadir, lembur, dan gaji
 		foreach ($premi as $data) {
 			$nip = $data->nip;
@@ -302,7 +302,7 @@ class OvertimeSalaryController extends Controller
 			$premiHadir  = $data->premi_hadir;
 			$premiLembur = $data->premi_lembur;
 			$gaji = $data->gaji;
-            $status = $data->status;
+            $status = $data->employee->status;
 
 			if (isset($totalDataPerNIP[$nip])) {
 				// Update data doa

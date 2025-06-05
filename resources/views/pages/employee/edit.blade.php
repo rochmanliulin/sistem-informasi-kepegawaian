@@ -52,13 +52,13 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label for="tgl_masuk_kerja" class="form-control-label">Tanggal Masuk Kerja</label>
 										<input type="text" class="form-control bg-white date" id="tglMasukKerja" placeholder="Tanggal Masuk Kerja" name="tgl_masuk_kerja" onfocus="focused(this)" onfocusout="defocused(this)" value="{{ $employee->tgl_masuk_kerja }}"/>
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label for="status" class="form-control-label">Status Pegawai</label>
 										<select class="form-select" name="status" id="status" aria-label="Default select example" required>
@@ -67,6 +67,12 @@
 											<option value="Pegawai Harian" {{ $employee->status === 'Pegawai Harian' ? 'selected' : '' }}>Pegawai Harian</option>
 										</select>
 										<p id="error-status" class='text-danger text-xs pt-1'></p>
+									</div>
+								</div>
+                                <div class="col-md-4">
+									<div class="form-group">
+										<label for="email" class="form-control-label">Email</label>
+										<input type="text" class="form-control" id="email" placeholder="email" name="email" value="{{ $employee->email }}"/>
 									</div>
 								</div>
 							</div>
@@ -98,10 +104,10 @@
 
 			if (status === 'Pilih...') {
 				document.getElementById('error-status').innerText = 'Pilih status pegawai!';
-				
+
 				return false;
 			}
-			
+
 			return true;
 		}
 	</script>

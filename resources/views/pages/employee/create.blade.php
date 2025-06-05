@@ -69,6 +69,15 @@
 									</div>
 								</div>
 							</div>
+                            <div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="email" class="form-control-label">Email</label>
+										<input type="text" class="form-control" id="email" placeholder="email" name="email"/>
+                                        @error('email') <p class='text-danger text-xs pt-1'> {{ $message }} </p> @enderror
+									</div>
+								</div>
+							</div>
 							<div class="row justify-content-center mt-4">
 									<button type="submit" class="btn bg-gradient-info col-1 mb-0">Tambah</button>
 							</div>
