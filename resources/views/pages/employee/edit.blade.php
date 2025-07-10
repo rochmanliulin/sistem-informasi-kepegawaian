@@ -77,7 +77,7 @@
 								</div>
 							</div>
 							<div class="row justify-content-center mt-4">
-									<button type="submit" class="btn bg-gradient-success col-1 mb-0">Update</button>
+									<button type="submit" class="btn bg-gradient-success col-2 mb-0">Update</button>
 							</div>
 						</form>
 					</div>

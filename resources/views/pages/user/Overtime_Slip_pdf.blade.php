@@ -102,67 +102,86 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+    @if($data->total_uang_lembur > 0)
+        <tr>
         <td>Gaji Lembur</td>
         <td class="text-right">
-            {{ $data->total_uang_lembur > 0 ? 'Rp. ' . number_format($data->total_uang_lembur, 0, ',', '.') : '-' }}
+            Rp. {{ number_format($data->total_uang_lembur, 0, ',', '.') }}
         </td>
-      </tr>
-      <tr>
+        </tr>
+    @endif
+
+    @if($data->doa > 0)
+        <tr>
         <td>Do'a</td>
         <td class="text-right">
-            {{ $data->doa > 0? 'Rp. ' . number_format($data->doa, 0, ',', '.') : '-' }}
+            Rp. {{ number_format($data->doa, 0, ',', '.') }}
         </td>
-      </tr>
-      <tr>
+        </tr>
+    @endif
+
+    @if($data->premi_hadir > 0)
+        <tr>
         <td>Premi Hadir</td>
         <td class="text-right">
-            {{ $data->premi_hadir > 0 ? 'Rp. ' . number_format($data->premi_hadir, 0, ',', '.') : '-' }}
+            Rp. {{ number_format($data->premi_hadir, 0, ',', '.') }}
         </td>
-      </tr>
-      <tr>
+        </tr>
+    @endif
+
+    @if($data->premi_lembur > 0)
+        <tr>
         <td>Premi Lembur</td>
         <td class="text-right">
-            {{ $data->premi_lembur > 0 ? 'Rp. ' . number_format($data->premi_lembur, 0, ',', '.') : '-' }}
+            Rp. {{ number_format($data->premi_lembur, 0, ',', '.') }}
         </td>
-      </tr>
-      <!-- cek apakah "pegawai harian" -->
-      @if(strtolower($data->employee->status) === 'pegawai harian')
-        <tr>
-          <td>Gaji</td>
-          <td class="text-right">
-            {{ $data->gaji > 0 ? 'Rp. ' . number_format($data->gaji, 0, ',', '.') : '-' }}
-          </td>
         </tr>
-      @endif
+    @endif
 
-      <!--cek apakah departemen "packing" -->
-      @if(strtolower($data->employee->departemen) === 'packing')
+    @if(strtolower($data->employee->status) === 'pegawai harian' && $data->gaji > 0)
         <tr>
-          <td>Kopi</td>
-          <td class="text-right">
-            {{ $data->total_uang_kopi > 0 ? 'Rp. ' . number_format($data->total_uang_kopi, 0, ',', '.') : '-' }}
-          </td>
+        <td>Gaji</td>
+        <td class="text-right">
+            Rp. {{ number_format($data->gaji, 0, ',', '.') }}
+        </td>
         </tr>
-      @endif
-      <tr>
+    @endif
+
+    @if(strtolower($data->employee->departemen) === 'packing' && $data->total_uang_kopi > 0)
+        <tr>
+        <td>Kopi</td>
+        <td class="text-right">
+            Rp. {{ number_format($data->total_uang_kopi, 0, ',', '.') }}
+        </td>
+        </tr>
+    @endif
+
+    @if($data->total_uang_lembur_minggu > 0)
+        <tr>
         <td>Lembur Hari Minggu</td>
         <td class="text-right">
-            {{ $data->total_uang_lembur_minggu > 0 ? 'Rp. ' . number_format($data->total_uang_lembur_minggu, 0, ',', '.') : '-' }}
+            Rp. {{ number_format($data->total_uang_lembur_minggu, 0, ',', '.') }}
         </td>
-      </tr>
-      <tr>
+        </tr>
+    @endif
+
+    @if($data->total_uang_makan > 0)
+        <tr>
         <td>Uang Makan</td>
         <td class="text-right">
-            {{ $data->total_uang_makan > 0 ? 'Rp. ' . number_format($data->total_uang_makan, 0, ',', '.') : '-' }}
+            Rp. {{ number_format($data->total_uang_makan, 0, ',', '.') }}
         </td>
-      </tr>
-      <tr>
+        </tr>
+    @endif
+
+    @if($data->total > 0)
+        <tr>
         <th class="text-center">TOTAL</th>
         <th class="text-right">
-            {{ $data->total > 0 ? 'Rp. ' . number_format($data->total, 0, ',', '.') : '-' }}
+            Rp. {{ number_format($data->total, 0, ',', '.') }}
         </th>
-      </tr>
+        </tr>
+    @endif
     </tbody>
   </table>
   <span class="font-weight-bold" style="font-size: 13px;">*Catatan : </span><p class="d-inline">Jika ditemukan kesalahan dalam perhitungan harap menghubungi sdri ANISSA NUR ROCHIMAH</p>

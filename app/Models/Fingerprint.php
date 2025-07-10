@@ -37,7 +37,7 @@ class Fingerprint extends Model
 					return ((($durasiJamLembur / 60) - 2) * 15000) + 22000;
 				}
 				break;
-			
+
 			case 'Kepala Operasional':
 				if ($durasiJamLembur < 120) {
 					return ($durasiJamLembur / 60) * 15000;
@@ -47,7 +47,7 @@ class Fingerprint extends Model
 					return ($durasiJamLembur / 60) * 15000;
 				}
 				break;
-			
+
 			default:
 				return ($durasiJamLembur / 60) * 10000;
 				break;
@@ -58,7 +58,7 @@ class Fingerprint extends Model
 	{
 		$durasiJamLembur = $this->lembur_akhir;
 		$jabatan = $this->employee->jabatan;
-		
+
 		switch ($jabatan) {
 			case 'Kepala Operasional':
 				if ($durasiJamLembur >= 120 && $durasiJamLembur < 180) {
@@ -69,7 +69,7 @@ class Fingerprint extends Model
 					return 0;
 				}
 				break;
-				
+
 			default:
 				if ($durasiJamLembur >= 120 && $durasiJamLembur < 180) {
 					return 10000;
@@ -88,17 +88,6 @@ class Fingerprint extends Model
 
 		if ((stripos($jamKerja, 'packing') !== false) && (preg_match('/\b[23]\b/', $jamKerja))) {
 			return 10000;
-		} else {
-			return null;
-		}
-	}
-
-	public function calculateUangLemburMinggu()
-	{
-		$durasiJamLembur = $this->lembur_akhir;
-
-		if ($durasiJamLembur) {
-			return ($durasiJamLembur / 60) * 20000;
 		} else {
 			return null;
 		}

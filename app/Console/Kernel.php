@@ -25,9 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Kirim Slip Lembur Setiap Hari Sabtu pukul 00:00 WIB
         $schedule->command('send:overtime-sLip')
-                 ->weeklyOn(6,'11:24') // Atur waktu sesuai kebutuhan
+                 ->daily() // Mengecek setiap hari jam 00.00 WIB
                  ->timezone('Asia/Jakarta');
     }
 

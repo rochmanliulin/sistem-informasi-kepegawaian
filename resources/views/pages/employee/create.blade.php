@@ -79,7 +79,7 @@
 								</div>
 							</div>
 							<div class="row justify-content-center mt-4">
-									<button type="submit" class="btn bg-gradient-info col-1 mb-0">Tambah</button>
+									<button type="submit" class="btn bg-gradient-info col-2 mb-0">Tambah</button>
 							</div>
 						</form>
 					</div>

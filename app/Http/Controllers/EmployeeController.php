@@ -104,7 +104,7 @@ class EmployeeController extends Controller
       'departemen' => 'nullable',
       'tgl_masuk_kerja' => 'nullable|date',
       'status' => 'required',
-      'email' => 'required'
+      'email' => 'nullable'
     ]);
 
     try {
@@ -144,7 +144,7 @@ class EmployeeController extends Controller
       'departemen' => 'nullable',
       'tgl_masuk_kerja' => 'nullable',
       'status' => 'required',
-      'email' => 'required'
+      'email' => 'nullable'
     ]);
 
     try {
