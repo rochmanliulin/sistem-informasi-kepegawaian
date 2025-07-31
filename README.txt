@@ -50,3 +50,4 @@ v2.0.2 - 10/07/2025
   -Tambah Fitur Import, Edit, Tambah email untuk pegawai
   -Otomatisasi kirim slip lembur pegawai sesuai tanggal terbit
   -Rincian slip gaji tidak muncul jika nominalnya Rp.0
+  -Reuploud ke Github
