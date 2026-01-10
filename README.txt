@@ -45,3 +45,9 @@ v2.0.0 - 12/07/2024
 
 v2.0.1 - 31/12/2024
   -Tambah auto cut kolom lembur_akhir berdasarkan scan_pulang
+
+v2.0.2 - 10/07/2025
+  -Tambah Fitur Import, Edit, Tambah email untuk pegawai
+  -Otomatisasi kirim slip lembur pegawai sesuai tanggal terbit
+  -Rincian slip gaji tidak muncul jika nominalnya Rp.0
+  -Reuploud ke Github
